@@ -7,7 +7,7 @@
 <style>
 body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
-/* ✅ LOGIN */
+/* LOGIN */
 #loginPage { width:350px; margin:100px auto; }
 .login-box { background:white; border-radius:12px; text-align:center; }
 
@@ -21,10 +21,15 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
   margin:0;
 }
 
-.small-text {
+.login-text {
+  color:white;
   font-size:12px;
+}
+
+.desc {
+  font-size:12px;
+  margin:10px;
   color:#555;
-  margin-top:10px;
 }
 
 input { width:80%; padding:10px; margin:10px; }
@@ -37,9 +42,9 @@ button {
   border-radius:5px;
 }
 
-/* ✅ SIDEBAR */
+/* SIDEBAR */
 .sidebar {
-  width:260px;
+  width:250px;
   background:#003580;
   color:white;
   height:100vh;
@@ -53,26 +58,39 @@ button {
   padding:10px;
 }
 
-.address { margin-top:40px; font-size:11px; line-height:1.5; }
+.address {
+  margin-top:40px;
+  font-size:11px;
+  line-height:1.5;
+}
+
 .address a { color:white; }
 
-/* ✅ MAIN */
-.main { flex:1; padding:20px; display:none; position:relative; }
+/* MAIN */
+.main {
+  flex:1;
+  padding:20px;
+  display:none;
+  position:relative;
+}
 
-/* ✅ TOP BUTTON */
+/* ✅ FIXED BUTTON */
 .top-button {
   position:absolute;
   right:20px;
   top:20px;
   background:#0071c2;
   color:white;
-  padding:8px;
-  font-size:12px;
+  padding:8px 14px;
   border-radius:6px;
+  font-size:12px;
   text-decoration:none;
+  font-weight:bold;
 }
 
-/* ✅ CARDS */
+.top-button:hover { background:#005999; }
+
+/* CARDS */
 .cards {
   display:flex;
   gap:10px;
@@ -87,17 +105,24 @@ button {
   text-align:center;
 }
 
-/* ✅ TABLE */
+/* TABLE */
 table { width:100%; background:white; border-collapse:collapse; }
 th { background:#003580; color:white; padding:10px; }
 td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
+/* STATUS */
 .status { padding:5px 10px; border-radius:20px; }
 .paid { background:#e6f7ec; color:green; }
 .unpaid { background:#fdecea; color:red; }
 
-/* ✅ POPUP */
-.modal { display:none; position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.5); }
+/* POPUP */
+.modal {
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+}
 
 .modal-box {
   background:white;
@@ -119,7 +144,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   margin:20px 0;
 }
 
-/* ✅ FOOTER */
+/* FOOTER */
 .footer {
   position:fixed;
   bottom:0;
@@ -130,24 +155,20 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   font-size:12px;
   padding:10px;
 }
-
-/* PRINT */
-@media print {
-  .sidebar, .footer, button, .top-button { display:none; }
-}
 </style>
 </head>
 
 <body>
 
-<!-- ✅ LOGIN -->
+<!-- LOGIN -->
 <div id="loginPage">
   <div class="login-box">
     <div class="login-header">
       <h1>Booking.com</h1>
-      <div style="color:white; font-size:12px;">VAT SYSTEM</div>
+      <div class="login-text">VAT SYSTEM</div>
     </div>
-    <div class="small-text">
+
+    <div class="desc">
       Log in to Booking.com B.V. VAT System to proceed
     </div>
 
@@ -157,10 +178,10 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   </div>
 </div>
 
-<!-- ✅ SIDEBAR -->
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <h1>Booking.com</h1>
-  <h2>VAT System</h2>
+  <h3>VAT System</h3>
 
   <select id="yearSelect" onchange="changeYear(this.value)">
     <option value="2026">2026</option>
@@ -170,7 +191,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   <button onclick="filterQuarter('all')">All</button>
   <button onclick="filterQuarter('Q1')">Q1</button>
   <button onclick="filterQuarter('Q2')">Q2</button>
-  <button onclick="printReport()">Print</button>
+
   <button onclick="logout()">Logout</button>
 
   <div class="address">
@@ -182,36 +203,27 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
     VAT number: NL805734958B01<br>
     TIN: 435 075 022 00000<br>
     Registered No.: 31047344<br>
-    <a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
+    <a href="https://www.booking.com" target="_blank">booking.com</a>
   </div>
 </div>
 
-<!-- ✅ MAIN -->
+<!-- MAIN -->
 <div class="main" id="main">
 
-https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu" target="_blank">
-← Go back to main page
+<!-- ✅ FIXED WORKING BUTTON -->
+<a href="https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu&ses=46366be37f83444108b07e7ce06b32b9&source=nav"
+   target="_blank"
+   class="top-button">
+   ← Go back to main page
 </a>
 
 <h2>Bellagio Hills Hotel & Restaurant</h2>
 <h3 id="yearTitle">VAT Report 2026</h3>
 
-<!-- ✅ DASHBOARD CARDS -->
 <div class="cards">
-  <div class="card">
-    <b>Total VAT</b><br>
-    ₱ <span id="totalVAT"></span>
-  </div>
-
-  <div class="card">
-    <b>Q1 VAT</b><br>
-    ₱ <span id="q1VAT"></span>
-  </div>
-
-  <div class="card">
-    <b>Q2 VAT</b><br>
-    ₱ <span id="q2VAT"></span>
-  </div>
+  <div class="card">Total VAT<br>₱ <span id="totalVAT"></span></div>
+  <div class="card">Q1 VAT<br>₱ <span id="q1VAT"></span></div>
+  <div class="card">Q2 VAT<br>₱ <span id="q2VAT"></span></div>
 </div>
 
 <table id="vatTable">
@@ -232,7 +244,7 @@ https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.h
 
 </div>
 
-<!-- ✅ POPUP -->
+<!-- POPUP -->
 <div id="modal" class="modal">
   <div class="modal-box">
     <h3>VAT Payment Details</h3>
@@ -249,16 +261,15 @@ https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.h
   </div>
 </div>
 
-<!-- ✅ FOOTER -->
+<!-- FOOTER -->
 <div class="footer">
-About Us | Privacy and cookie statements | FAQs<br>
-Share your feedback<br>
-© Copyright Booking.com 2026
+About Us | Privacy | FAQs<br>
+© Booking.com 2026
 </div>
 
 <script>
 
-// ✅ LOGIN
+// LOGIN
 function login(){
   if(
     user.value==="sales@bellagiohills.com.ph" &&
@@ -267,19 +278,16 @@ function login(){
     loginPage.style.display="none";
     sidebar.style.display="block";
     main.style.display="block";
-
-    let saved = localStorage.getItem("year") || "2026";
-    document.getElementById("yearSelect").value = saved;
-    load(saved);
+    load("2026");
   } else alert("Invalid login");
 }
 
-// ✅ FORMAT
+// FORMAT
 function peso(n){
   return parseFloat(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-// ✅ DATA 2026
+// DATA
 const data2026 = [
 ["January",4284,514.08,"Paid","Feb-26","Q1"],
 ["February",9240,1108.80,"Paid","Mar-26","Q1"],
@@ -288,72 +296,44 @@ const data2026 = [
 ["May",10701,1284.12,"Unpaid","","Q2"]
 ];
 
-const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const months=["June","July","August","September","October","November","December"];
 
-// ✅ LOAD WITH TOTALS
-function load(year){
-  localStorage.setItem("year", year);
-
-  let tb = vatTable.querySelector("tbody");
+// LOAD
+function load(){
+  let tb=vatTable.querySelector("tbody");
   tb.innerHTML="";
 
   let total=0, q1=0, q2=0;
 
-  if(year==="2026"){
-    data2026.forEach(r=>{
-      total+=r[2];
-      if(r[5]==="Q1") q1+=r[2];
-      if(r[5]==="Q2") q2+=r[2];
+  data2026.forEach(r=>{
+    total+=r[2];
+    if(r[5]=="Q1") q1+=r[2];
+    if(r[5]=="Q2") q2+=r[2];
 
-      addRow([r[0],r[1],12,r[2],r[3],r[4],r[5]]);
-    });
+    tb.innerHTML+=`
+<tr data-q="${r[5]}">
+<td>${r[0]}</td>
+<td>₱ ${peso(r[1])}</td>
+<td>12%</td>
+<td>₱ ${peso(r[2])}</td>
+<td class="${r[3]=='Paid'?'paid':'unpaid'}">${r[3]}</td>
+<td>${r[4]}</td>
+<td>${r[5]}</td>
+<td>${r[3]=='Paid'?'<button onclick="openModal(this)">View</button>':'Unpaid'}</td>
+</tr>`;
+  });
 
-    // ✅ UNAVAILABLE MONTHS BACK
-    for(let i=5;i<12;i++){
-      tb.innerHTML += `<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
-    }
-  }
+  // ✅ restored months
+  months.forEach(m=>{
+    tb.innerHTML+=`<tr><td>${m}</td><td colspan="7">Unavailable</td></tr>`;
+  });
 
   totalVAT.innerText=peso(total);
   q1VAT.innerText=peso(q1);
   q2VAT.innerText=peso(q2);
-
-  yearTitle.innerText="VAT Report "+year;
 }
 
-// ✅ ROW
-function addRow(r){
-  let btn = r[4]==="Paid"
-    ? `<button onclick="openModal(this)">View</button>`
-    : "Unpaid";
-
-  let cls=r[4]==="Paid"?"paid":"unpaid";
-
-  vatTable.querySelector("tbody").innerHTML+=`
-  <tr data-q="${r[6]}">
-    <td>${r[0]}</td>
-    <td>₱ ${peso(r[1])}</td>
-    <td>${r[2]}%</td>
-    <td>₱ ${peso(r[3])}</td>
-    <td><span class="status ${cls}">${r[4]}</span></td>
-    <td>${r[5]}</td>
-    <td>${r[6]}</td>
-    <td>${btn}</td>
-  </tr>`;
-}
-
-// ✅ FILTER
-function filterQuarter(q){
-  document.querySelectorAll("#vatTable tbody tr").forEach(row=>{
-    if(!row.dataset.q){
-      row.style.display="";
-      return;
-    }
-    row.style.display = (q==="all" || row.dataset.q===q) ? "" : "none";
-  });
-}
-
-// ✅ POPUP
+// POPUP
 function openModal(btn){
   let r=btn.parentElement.parentElement;
   mMonth.innerText=r.children[0].innerText;
@@ -364,10 +344,8 @@ function openModal(btn){
 
 function closeModal(){ modal.style.display="none"; }
 
-// ✅ INIT
-load(localStorage.getItem("year") || "2026");
-
 </script>
 
 </body>
 </html>
+``
