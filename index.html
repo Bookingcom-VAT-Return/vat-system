@@ -8,19 +8,9 @@
 body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
 /* ✅ LOGIN */
-#loginPage {
-  width:350px;
-  margin:100px auto;
-}
+#loginPage { width:350px; margin:100px auto; }
+.login-box { background:white; border-radius:12px; text-align:center; }
 
-.login-box {
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  text-align:center;
-}
-
-/* Booking header */
 .login-header {
   background:#003580;
   padding:25px;
@@ -28,22 +18,16 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
 .login-header h1 {
   color:white;
-  font-size:28px;
   margin:0;
 }
 
-/* instruction text */
-.login-text {
+.small-text {
   font-size:12px;
-  margin-top:15px;
-  color:#444;
+  color:#555;
+  margin-top:10px;
 }
 
-input {
-  width:80%;
-  padding:10px;
-  margin:10px;
-}
+input { width:80%; padding:10px; margin:10px; }
 
 button {
   padding:10px;
@@ -51,7 +35,6 @@ button {
   color:white;
   border:none;
   border-radius:5px;
-  cursor:pointer;
 }
 
 /* ✅ SIDEBAR */
@@ -64,83 +47,63 @@ button {
   display:none;
 }
 
-.sidebar button, .sidebar select {
+.sidebar select, .sidebar button {
   width:100%;
   margin:5px 0;
   padding:10px;
 }
 
-.address {
-  margin-top:40px;
-  font-size:11px;
-  line-height:1.5;
-}
-
+.address { margin-top:40px; font-size:11px; line-height:1.5; }
 .address a { color:white; }
 
 /* ✅ MAIN */
-.main {
-  flex:1;
-  padding:20px;
-  display:none;
-  position:relative;
-}
+.main { flex:1; padding:20px; display:none; position:relative; }
 
-/* TOP BUTTON */
+/* ✅ TOP BUTTON */
 .top-button {
   position:absolute;
   right:20px;
   top:20px;
   background:#0071c2;
   color:white;
-  padding:8px 12px;
+  padding:8px;
   font-size:12px;
-  text-decoration:none;
   border-radius:6px;
+  text-decoration:none;
+}
+
+/* ✅ CARDS */
+.cards {
+  display:flex;
+  gap:10px;
+  margin:15px 0;
+}
+
+.card {
+  flex:1;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
 }
 
 /* ✅ TABLE */
-table {
-  width:100%;
-  background:white;
-  border-collapse:collapse;
-}
+table { width:100%; background:white; border-collapse:collapse; }
+th { background:#003580; color:white; padding:10px; }
+td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
-th {
-  background:#003580;
-  color:white;
-  padding:10px;
-}
-
-td {
-  padding:8px;
-  text-align:center;
-  border-bottom:1px solid #eee;
-}
-
-/* STATUS */
-.status {
-  padding:5px 10px;
-  border-radius:20px;
-}
+.status { padding:5px 10px; border-radius:20px; }
 .paid { background:#e6f7ec; color:green; }
 .unpaid { background:#fdecea; color:red; }
 
 /* ✅ POPUP */
-.modal {
-  display:none;
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.5);
-}
+.modal { display:none; position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.5); }
 
 .modal-box {
   background:white;
   padding:25px;
   width:400px;
   margin:10% auto;
-  border-radius:10px;
   text-align:center;
 }
 
@@ -152,7 +115,6 @@ td {
 
 .paid-highlight {
   color:green;
-  font-weight:bold;
   font-size:18px;
   margin:20px 0;
 }
@@ -169,6 +131,7 @@ td {
   padding:10px;
 }
 
+/* PRINT */
 @media print {
   .sidebar, .footer, button, .top-button { display:none; }
 }
@@ -180,19 +143,17 @@ td {
 <!-- ✅ LOGIN -->
 <div id="loginPage">
   <div class="login-box">
-
     <div class="login-header">
       <h1>Booking.com</h1>
+      <div style="color:white; font-size:12px;">VAT SYSTEM</div>
     </div>
-
-    <div class="login-text">
+    <div class="small-text">
       Log in to Booking.com B.V. VAT System to proceed
     </div>
 
     <input id="user" placeholder="Username">
     <input id="pass" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
-
   </div>
 </div>
 
@@ -228,16 +189,30 @@ td {
 <!-- ✅ MAIN -->
 <div class="main" id="main">
 
-<a class="top-button"
-href="https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu"
-target="_blank">
+https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu" target="_blank">
 ← Go back to main page
 </a>
 
 <h2>Bellagio Hills Hotel & Restaurant</h2>
 <h3 id="yearTitle">VAT Report 2026</h3>
 
-<h3>Total VAT: ₱ <span id="totalVAT"></span></h3>
+<!-- ✅ DASHBOARD CARDS -->
+<div class="cards">
+  <div class="card">
+    <b>Total VAT</b><br>
+    ₱ <span id="totalVAT"></span>
+  </div>
+
+  <div class="card">
+    <b>Q1 VAT</b><br>
+    ₱ <span id="q1VAT"></span>
+  </div>
+
+  <div class="card">
+    <b>Q2 VAT</b><br>
+    ₱ <span id="q2VAT"></span>
+  </div>
+</div>
 
 <table id="vatTable">
 <thead>
@@ -304,7 +279,7 @@ function peso(n){
   return parseFloat(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-// ✅ 2026 DATA
+// ✅ DATA 2026
 const data2026 = [
 ["January",4284,514.08,"Paid","Feb-26","Q1"],
 ["February",9240,1108.80,"Paid","Mar-26","Q1"],
@@ -315,26 +290,34 @@ const data2026 = [
 
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-// ✅ LOAD FIXED
+// ✅ LOAD WITH TOTALS
 function load(year){
   localStorage.setItem("year", year);
+
   let tb = vatTable.querySelector("tbody");
   tb.innerHTML="";
-  let total=0;
+
+  let total=0, q1=0, q2=0;
 
   if(year==="2026"){
     data2026.forEach(r=>{
       total+=r[2];
+      if(r[5]==="Q1") q1+=r[2];
+      if(r[5]==="Q2") q2+=r[2];
+
       addRow([r[0],r[1],12,r[2],r[3],r[4],r[5]]);
     });
 
-    // ✅ RESTORE UNAVAILABLE MONTHS
+    // ✅ UNAVAILABLE MONTHS BACK
     for(let i=5;i<12;i++){
       tb.innerHTML += `<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
     }
   }
 
   totalVAT.innerText=peso(total);
+  q1VAT.innerText=peso(q1);
+  q2VAT.innerText=peso(q2);
+
   yearTitle.innerText="VAT Report "+year;
 }
 
@@ -359,8 +342,16 @@ function addRow(r){
   </tr>`;
 }
 
-// ✅ YEAR SWITCH
-function changeYear(y){ load(y); }
+// ✅ FILTER
+function filterQuarter(q){
+  document.querySelectorAll("#vatTable tbody tr").forEach(row=>{
+    if(!row.dataset.q){
+      row.style.display="";
+      return;
+    }
+    row.style.display = (q==="all" || row.dataset.q===q) ? "" : "none";
+  });
+}
 
 // ✅ POPUP
 function openModal(btn){
@@ -373,7 +364,7 @@ function openModal(btn){
 
 function closeModal(){ modal.style.display="none"; }
 
-// INIT
+// ✅ INIT
 load(localStorage.getItem("year") || "2026");
 
 </script>
