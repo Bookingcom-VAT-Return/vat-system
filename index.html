@@ -42,7 +42,7 @@ button {
 
 /* SIDEBAR */
 .sidebar {
-  width: 250px;
+  width: 260px;
   background:#003580;
   color:white;
   height:100vh;
@@ -56,7 +56,7 @@ button {
 .sidebar .address {
   font-size:11px;
   margin-top:40px;
-  line-height:1.4;
+  line-height:1.5;
 }
 
 .sidebar button, select {
@@ -110,14 +110,22 @@ td {
 
 .modal-box {
   background:white;
-  padding:20px;
+  padding:25px;
   width:400px;
   margin:10% auto;
+  border-radius:10px;
 }
 
 .info-row {
   display:flex;
   justify-content:space-between;
+  margin:10px 0;
+}
+
+.paid-highlight {
+  color:green;
+  font-weight:bold;
+  font-size:16px;
 }
 
 /* FOOTER */
@@ -130,6 +138,12 @@ td {
   text-align:center;
   padding:10px;
   font-size:12px;
+}
+
+/* LINK STYLE */
+.footer a, .address a {
+  color:white;
+  text-decoration:underline;
 }
 
 /* PRINT */
@@ -170,6 +184,7 @@ td {
   <button onclick="logout()">Logout</button>
 
   <div class="address">
+    Booking.com B.V.<br>
     Oosterdokskade 163<br>
     1011 DL Amsterdam<br>
     Netherlands<br><br>
@@ -177,7 +192,7 @@ td {
     VAT number: NL805734958B01<br>
     TIN: 435 075 022 00000<br>
     Registered No: 31047344<br>
-    https://www.booking.com
+    <a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
   </div>
 </div>
 
@@ -203,13 +218,12 @@ td {
 </thead>
 <tbody></tbody>
 </table>
-
 </div>
 
-<!-- MODAL -->
+<!-- POPUP -->
 <div id="modal" class="modal">
   <div class="modal-box">
-    <h3>VAT Payment</h3>
+    <h3>VAT Payment Details</h3>
 
     <div class="info-row">
       <span id="mMonth"></span>
@@ -218,7 +232,7 @@ td {
     </div>
 
     <div class="info-row">
-      <b style="color:green;">PAID</b>
+      <span class="paid-highlight">✔ PAID</span>
     </div>
 
     <button onclick="closeModal()">Close</button>
@@ -234,7 +248,7 @@ Share your feedback<br>
 
 <script>
 
-// LOGIN
+// ✅ LOGIN
 function login(){
   if(user.value==="admin" && pass.value==="1234"){
     loginPage.style.display="none";
@@ -243,23 +257,28 @@ function login(){
   } else alert("Invalid login");
 }
 
-// LOGOUT
-function logout(){
-  location.reload();
+// ✅ LOGOUT
+function logout(){ location.reload(); }
+
+// ✅ FORMAT PESO
+function formatPeso(num){
+  return parseFloat(num).toLocaleString("en-PH", {
+    minimumFractionDigits: 2
+  });
 }
 
-// DATA
+// ✅ DATA
 const data2026 = [
-["January","4284.00","12%","514.08","Paid","Feb-26","Q1"],
-["February","9240.00","12%","1108.80","Paid","Mar-26","Q1"],
-["March","2396.85","12%","287.62","Paid","Apr-26","Q1"],
-["April","756.00","12%","90.72","Paid","May-26","Q2"],
-["May","10701.00","12%","1284.12","Unpaid","Jun-26","Q2"]
+["January",4284.00,"12%",514.08,"Paid","Feb-26","Q1"],
+["February",9240.00,"12%",1108.80,"Paid","Mar-26","Q1"],
+["March",2396.85,"12%",287.62,"Paid","Apr-26","Q1"],
+["April",756.00,"12%",90.72,"Paid","May-26","Q2"],
+["May",10701.00,"12%",1284.12,"Unpaid","Jun-26","Q2"]
 ];
 
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-// LOAD TABLE
+// ✅ LOAD TABLE
 function load(year){
   let tb = vatTable.querySelector("tbody");
   tb.innerHTML="";
@@ -267,7 +286,7 @@ function load(year){
 
   if(year==="2026"){
     data2026.forEach(r=>{
-      total += parseFloat(r[3]) || 0;
+      total += r[3];
       addRow(r);
     });
     for(let i=5;i<12;i++){
@@ -277,16 +296,16 @@ function load(year){
 
   if(year==="2025"){
     months.forEach(m=>{
-      addRow([m,"0.00","","0.00","Unpaid","-","-"]);
+      addRow([m,0,"",0,"Unpaid","-","-"]);
     });
     total=0;
   }
 
-  totalVAT.innerText = total.toFixed(2);
+  totalVAT.innerText = formatPeso(total);
   yearTitle.innerText = "VAT Report " + year;
 }
 
-// ADD ROW
+// ✅ ADD ROW
 function addRow(r){
   let btn = r[4]==="Paid" ? `<button onclick="openModal(this)">View</button>` : "-";
   let cls = r[4]==="Paid"?"paid":"unpaid";
@@ -294,9 +313,9 @@ function addRow(r){
   vatTable.querySelector("tbody").innerHTML+=`
   <tr data-q="${r[6]}">
     <td>${r[0]}</td>
-    <td>${r[1]}</td>
+    <td>₱ ${formatPeso(r[1])}</td>
     <td>${r[2]}</td>
-    <td>${r[3]}</td>
+    <td>₱ ${formatPeso(r[3])}</td>
     <td><span class="status ${cls}">${r[4]}</span></td>
     <td>${r[5]}</td>
     <td>${r[6]}</td>
@@ -304,10 +323,10 @@ function addRow(r){
   </tr>`;
 }
 
-// YEAR SWITCH
+// ✅ CHANGE YEAR
 function changeYear(y){ load(y); }
 
-// FILTER
+// ✅ FILTER
 function filterQuarter(q){
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
     if(!r.dataset.q) return;
@@ -315,20 +334,23 @@ function filterQuarter(q){
   });
 }
 
-// POPUP
+// ✅ POPUP
 function openModal(btn){
   let r=btn.parentElement.parentElement;
-  mMonth.innerText="Month: "+r.children[0].innerText;
-  mCommission.innerText="₱ "+r.children[1].innerText;
-  mVAT.innerText="VAT: ₱ "+r.children[3].innerText;
+
+  mMonth.innerText = r.children[0].innerText;
+  mCommission.innerText = r.children[1].innerText;
+  mVAT.innerText = r.children[3].innerText;
+
   modal.style.display="block";
 }
+
 function closeModal(){ modal.style.display="none"; }
 
-// PRINT
+// ✅ PRINT
 function printReport(){ window.print(); }
 
-// LOAD DEFAULT
+// INIT
 load("2026");
 
 </script>
