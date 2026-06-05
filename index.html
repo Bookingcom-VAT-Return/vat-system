@@ -327,14 +327,21 @@ const months=["January","February","March","April","May","June","July","August",
 
 // LOGIN
 function login(){
-if(user.value==="sales@bellagiohills.com.ph" &&
-pass.value==="GMBellagiohills#2025"){
-loginPage.style.display="none";
-sidebar.style.display="block";
-main.style.display="block";
-load("2026");
+  if(
+    user.value==="sales@bellagiohills.com.ph" &&
+    pass.value==="GMBellagiohills#2025"
+  ){
+    // ✅ SAVE LOGIN SESSION
+    localStorage.setItem("loggedIn","true");
+
+    loginPage.style.display="none";
+    sidebar.style.display="block";
+    main.style.display="block";
+
+    load("2026");
+  }
 }
-}
+``
 
 // LOAD
 function load(year){
