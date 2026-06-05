@@ -5,16 +5,39 @@
 <title>VAT Dashboard</title>
 
 <style>
+
+/* ✅ GLOBAL */
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   margin: 0;
-  background: #f4f6f9;
+  background: #f2f5f9;
 }
 
-/* LOGIN */
+/* ✅ NAV BAR (Booking style) */
+.navbar {
+  background: #003580;
+  color: white;
+  padding: 15px 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar img {
+  width: 140px;
+}
+
+/* ✅ LOGIN */
 #loginPage {
   max-width: 400px;
   margin: 80px auto;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .login-header {
@@ -22,24 +45,22 @@ body {
   color: white;
   text-align: center;
   padding: 25px;
-  border-radius: 15px 15px 0 0;
 }
 
 .logo {
-  width: 150px;
+  width: 140px;
 }
 
-.card {
-  background: white;
+.card-body {
   padding: 20px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-  border-radius: 0 0 15px 15px;
 }
 
 input {
-  width: 95%;
+  width: 100%;
   padding: 10px;
-  margin: 8px 0;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 button {
@@ -49,50 +70,48 @@ button {
   color: white;
   border: none;
   border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 button:hover {
   background: #005999;
 }
 
-/* DASHBOARD */
+/* ✅ DASHBOARD */
 #dashboard {
   display: none;
   padding: 20px;
 }
 
-/* TOP BAR */
-.top-bar {
+/* ✅ TOP INFO CARDS */
+.cards {
   display: flex;
-  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
   background: white;
   padding: 15px;
   border-radius: 12px;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.logo-small {
-  width: 150px;
+.card h3 {
+  margin: 0;
+  color: #003580;
 }
 
-.owner {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-/* TITLE */
-.title {
-  margin-top: 10px;
+/* ✅ TABLE */
+.table-container {
   background: white;
+  border-radius: 12px;
   padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-/* TABLE */
-.table-box {
-  margin-top: 15px;
-  background: white;
-  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow-x: auto;
 }
 
@@ -104,64 +123,90 @@ table {
 th {
   background: #003580;
   color: white;
-  padding: 10px;
+  padding: 12px;
 }
 
 td {
-  padding: 8px;
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #eee;
 }
 
-.paid {
-  color: green;
+/* ✅ STATUS BADGES */
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: bold;
+}
+
+.paid {
+  background: #e6f7ec;
+  color: #2e7d32;
 }
 
 .unpaid {
-  color: red;
-  font-weight: bold;
+  background: #fdecea;
+  color: #c62828;
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
-  th, td {
-    font-size: 12px;
+/* ✅ MOBILE */
+@media (max-width: 700px) {
+  .cards {
+    flex-direction: column;
   }
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- ✅ LOGIN -->
 <div id="loginPage">
-  <div class="login-header">
-    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg">
-    <h2>Booking.com B.V. VAT Return</h2>
-  </div>
+  <div class="login-card">
+    <div class="login-header">
+      <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg">
+      <h2>VAT Return System</h2>
+    </div>
 
-  <div class="card">
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+    <div class="card-body">
+      <input id="username" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ✅ DASHBOARD -->
 <div id="dashboard">
 
-  <div class="top-bar">
-    <div class="owner">Bellagio Hills Hotel and Restaurant</div>
-    <img class="logo-small" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg">
+  <!-- NAV -->
+  <div class="navbar">
+    <div>Bellagio Hills Hotel and Restaurant</div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg">
   </div>
 
-  <div class="title">
-    <h2>Booking.com B.V. VAT Report</h2>
-    <p>Year 2026</p>
+  <!-- SUMMARY CARDS -->
+  <div class="cards">
+    <div class="card">
+      <h3>Total VAT</h3>
+      <p id="totalVAT">₱ 0.00</p>
+    </div>
+
+    <div class="card">
+      <h3>Paid</h3>
+      <p id="paidCount">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Unpaid</h3>
+      <p id="unpaidCount">0</p>
+    </div>
   </div>
 
-  <div class="table-box">
+  <!-- TABLE -->
+  <div class="table-container">
     <table id="vatTable">
       <thead>
         <tr>
@@ -170,44 +215,25 @@ td {
           <th>VAT Rate</th>
           <th>VAT Amount</th>
           <th>Status</th>
-          <th>Remittance Date</th>
+          <th>Remittance</th>
           <th>Quarter</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr>
-          <td>JANUARY</td><td>4,284.00</td><td>12%</td><td>514.08</td>
-          <td class="paid">Paid</td><td>Feb-26</td><td>1st Quarter</td>
-        </tr>
+        <tr><td>JAN</td><td>4,284.00</td><td>12%</td><td>514.08</td><td><span class="status paid">Paid</span></td><td>Feb-26</td><td>Q1</td></tr>
+        <tr><td>FEB</td><td>9,240.00</td><td>12%</td><td>1108.80</td><td><span class="status paid">Paid</span></td><td>Mar-26</td><td>Q1</td></tr>
+        <tr><td>MAR</td><td>2,396.85</td><td>12%</td><td>287.62</td><td><span class="status paid">Paid</span></td><td>Apr-26</td><td>Q1</td></tr>
+        <tr><td>APR</td><td>756.00</td><td>12%</td><td>90.72</td><td><span class="status paid">Paid</span></td><td>May-26</td><td>Q2</td></tr>
+        <tr><td>MAY</td><td>10,701.00</td><td>12%</td><td>1284.12</td><td><span class="status unpaid">Unpaid</span></td><td>Jun-26</td><td>Q2</td></tr>
 
-        <tr>
-          <td>FEBRUARY</td><td>9,240.00</td><td>12%</td><td>1,108.80</td>
-          <td class="paid">Paid</td><td>Mar-26</td><td>1st Quarter</td>
-        </tr>
-
-        <tr>
-          <td>MARCH</td><td>2,396.85</td><td>12%</td><td>287.62</td>
-          <td class="paid">Paid</td><td>Apr-26</td><td>1st Quarter</td>
-        </tr>
-
-        <tr>
-          <td>APRIL</td><td>756.00</td><td>12%</td><td>90.72</td>
-          <td class="paid">Paid</td><td>May-26</td><td>2nd Quarter</td>
-        </tr>
-
-        <tr>
-          <td>MAY</td><td>10,701.00</td><td>12%</td><td>1,284.12</td>
-          <td class="unpaid">Unpaid</td><td>Jun-26</td><td>2nd Quarter</td>
-        </tr>
-
-        <tr><td>JUNE</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>JULY</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>AUGUST</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>SEPTEMBER</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>OCTOBER</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>NOVEMBER</td><td colspan="6">Unavailable</td></tr>
-        <tr><td>DECEMBER</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>JUN</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>JUL</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>AUG</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>SEP</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>OCT</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>NOV</td><td colspan="6">Unavailable</td></tr>
+        <tr><td>DEC</td><td colspan="6">Unavailable</td></tr>
       </tbody>
     </table>
   </div>
@@ -216,10 +242,11 @@ td {
 
 <script>
 
-// LOGIN (with memory)
+// ✅ AUTO LOGIN
 if(localStorage.getItem("login") === "true"){
   loginPage.style.display="none";
   dashboard.style.display="block";
+  calculateStats();
 }
 
 function login(){
@@ -229,6 +256,27 @@ function login(){
   } else {
     alert("Wrong login");
   }
+}
+
+// ✅ STATS
+function calculateStats(){
+  let total=0, paid=0, unpaid=0;
+
+  document.querySelectorAll("#vatTable tbody tr").forEach(row=>{
+    if(row.children.length > 3){
+      let vat = parseFloat(row.children[3].innerText) || 0;
+      let status = row.children[4].innerText;
+
+      total += vat;
+
+      if(status.includes("Paid")) paid++;
+      if(status.includes("Unpaid")) unpaid++;
+    }
+  });
+
+  totalVAT.innerText = "₱ " + total.toFixed(2);
+  paidCount.innerText = paid;
+  unpaidCount.innerText = unpaid;
 }
 
 </script>
