@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <title>Booking VAT Enterprise</title>
 
-<!-- LIBRARIES -->
-https://cdn.jsdelivr.net/npm/chart.js
-https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
-
 <style>
 body {
   margin: 0;
@@ -16,7 +12,7 @@ body {
   background: #f2f5f9;
 }
 
-/* ✅ SIDEBAR */
+/* SIDEBAR */
 .sidebar {
   width: 230px;
   background: #003580;
@@ -60,11 +56,6 @@ body {
 .topbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  width: 140px;
 }
 
 /* CARDS */
@@ -105,6 +96,11 @@ td {
   text-align: center;
 }
 
+tr:hover {
+  background: #f0f7ff;
+}
+
+/* STATUS */
 .status {
   padding: 5px 10px;
   border-radius: 20px;
@@ -114,29 +110,40 @@ td {
 .paid { background:#e6f7ec; color:green; }
 .unpaid { background:#fdecea; color:red; }
 
-/* CHART */
-#chartBox {
+/* POPUP MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
   background: white;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  margin: 10% auto;
+  border-radius: 10px;
+  text-align: center;
 }
 
 /* PRINT */
 @media print {
-  .sidebar, .cards, button, #chartBox { display:none; }
+  .sidebar, .cards, button, .modal { display:none; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ✅ SIDEBAR -->
+<!-- SIDEBAR -->
 <div class="sidebar">
   <h1>Booking.com</h1>
   <h2>VAT System</h2>
 
-  <button onclick="toggleChart()">Toggle Chart</button>
   <button onclick="filterQuarter('all')">All</button>
   <button onclick="filterQuarter('Q1')">Q1</button>
   <button onclick="filterQuarter('Q2')">Q2</button>
@@ -145,7 +152,7 @@ td {
   <button onclick="logout()">Logout</button>
 </div>
 
-<!-- ✅ MAIN -->
+<!-- MAIN -->
 <div class="main">
 
 <div class="topbar">
@@ -154,19 +161,14 @@ td {
 
 <h3>VAT Report 2026</h3>
 
-<!-- ✅ CARDS -->
+<!-- CARDS -->
 <div class="cards">
   <div class="card"><b>Total VAT:</b><br>₱ 3,285.34</div>
   <div class="card"><b>Paid:</b><br><span id="paidCount"></span></div>
   <div class="card"><b>Unpaid:</b><br><span id="unpaidCount"></span></div>
 </div>
 
-<!-- ✅ OPTIONAL CHART -->
-<div id="chartBox">
-  <canvas id="chart"></canvas>
-</div>
-
-<!-- ✅ TABLE -->
+<!-- TABLE -->
 <div class="table-box">
 <table id="vatTable">
 <thead>
@@ -178,16 +180,40 @@ td {
 <th>Status</th>
 <th>Remittance</th>
 <th>Quarter</th>
-<th>Invoice</th>
+<th>Action</th>
 </tr>
 </thead>
 
 <tbody>
-<tr data-q="Q1"><td>January</td><td>4,284.00</td><td>12%</td><td>514.08</td><td><span class="status paid">Paid</span></td><td>Feb-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q1"><td>February</td><td>9,240.00</td><td>12%</td><td>1,108.80</td><td><span class="status paid">Paid</span></td><td>Mar-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q1"><td>March</td><td>2,396.85</td><td>12%</td><td>287.62</td><td><span class="status paid">Paid</span></td><td>Apr-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q2"><td>April</td><td>756.00</td><td>12%</td><td>90.72</td><td><span class="status paid">Paid</span></td><td>May-26</td><td>Q2</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q2"><td>May</td><td>10,701.00</td><td>12%</td><td>1,284.12</td><td><span class="status unpaid">Unpaid</span></td><td>Jun-26</td><td>Q2</td><td>-</td></tr>
+<tr data-q="Q1">
+<td>January</td><td>4,284.00</td><td>12%</td><td>514.08</td>
+<td><span class="status paid">Paid</span></td><td>Feb-26</td><td>Q1</td>
+<td><button onclick="openModal(this)">View</button></td>
+</tr>
+
+<tr data-q="Q1">
+<td>February</td><td>9,240.00</td><td>12%</td><td>1,108.80</td>
+<td><span class="status paid">Paid</span></td><td>Mar-26</td><td>Q1</td>
+<td><button onclick="openModal(this)">View</button></td>
+</tr>
+
+<tr data-q="Q1">
+<td>March</td><td>2,396.85</td><td>12%</td><td>287.62</td>
+<td><span class="status paid">Paid</span></td><td>Apr-26</td><td>Q1</td>
+<td><button onclick="openModal(this)">View</button></td>
+</tr>
+
+<tr data-q="Q2">
+<td>April</td><td>756.00</td><td>12%</td><td>90.72</td>
+<td><span class="status paid">Paid</span></td><td>May-26</td><td>Q2</td>
+<td><button onclick="openModal(this)">View</button></td>
+</tr>
+
+<tr data-q="Q2">
+<td>May</td><td>10,701.00</td><td>12%</td><td>1,284.12</td>
+<td><span class="status unpaid">Unpaid</span></td><td>Jun-26</td><td>Q2</td>
+<td>-</td>
+</tr>
 
 <tr><td>June</td><td colspan="7">Unavailable</td></tr>
 <tr><td>July</td><td colspan="7">Unavailable</td></tr>
@@ -196,15 +222,28 @@ td {
 <tr><td>October</td><td colspan="7">Unavailable</td></tr>
 <tr><td>November</td><td colspan="7">Unavailable</td></tr>
 <tr><td>December</td><td colspan="7">Unavailable</td></tr>
+
 </tbody>
 </table>
 </div>
 
 </div>
 
+<!-- ✅ POPUP -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h3>VAT Submission</h3>
+    <p id="mMonth"></p>
+    <p id="mCommission"></p>
+    <p id="mVAT"></p>
+    <p><b>Status: Submitted</b></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+</div>
+
 <script>
 
-// ✅ COUNTS
+// COUNTS
 function calc(){
   let paid=0, unpaid=0;
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
@@ -218,7 +257,7 @@ function calc(){
 }
 calc();
 
-// ✅ FILTER
+// FILTER
 function filterQuarter(q){
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
     if(!r.dataset.q)return;
@@ -226,26 +265,7 @@ function filterQuarter(q){
   });
 }
 
-// ✅ TOGGLE CHART
-function toggleChart(){
-  let box=document.getElementById("chartBox");
-  box.style.display = box.style.display==="none" ? "block" : "none";
-}
-
-// ✅ CHART
-new Chart(document.getElementById("chart"), {
-  type:'bar',
-  data:{
-    labels:["Jan","Feb","Mar","Apr","May"],
-    datasets:[{
-      label:"VAT",
-      data:[514.08,1108.80,287.62,90.72,1284.12],
-      backgroundColor:"#0071c2"
-    }]
-  }
-});
-
-// ✅ EXPORT
+// EXPORT
 function exportExcel(){
   let csv="Month,Commission,VAT\n";
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
@@ -259,34 +279,27 @@ function exportExcel(){
   link.click();
 }
 
-// ✅ PRINT
+// PRINT
 function printReport(){
   window.print();
 }
 
-// ✅ PDF (BIR STYLE)
-function pdf(btn){
-  let r=btn.parentElement.parentElement;
-  let {jsPDF}=window.jspdf;
-  let doc=new jsPDF();
+// POPUP
+function openModal(btn){
+  let r = btn.parentElement.parentElement;
 
-  doc.setFontSize(16);
-  doc.text("Booking.com B.V.",20,20);
-  doc.text("VAT Return",20,30);
+  document.getElementById("mMonth").innerText = "Month: " + r.children[0].innerText;
+  document.getElementById("mCommission").innerText = "Commission: ₱ " + r.children[1].innerText;
+  document.getElementById("mVAT").innerText = "VAT: ₱ " + r.children[3].innerText;
 
-  doc.setFontSize(12);
-  let y=50;
-  for(let i=0;i<7;i++){
-    doc.text(r.children[i].innerText,20,y);
-    y+=10;
-  }
-
-  doc.text("BIR Form 2550M",20,y+10);
-
-  doc.save("VAT_Invoice.pdf");
+  document.getElementById("modal").style.display = "block";
 }
 
-// ✅ LOGOUT
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+// LOGOUT
 function logout(){
   localStorage.removeItem("login");
   location.reload();
