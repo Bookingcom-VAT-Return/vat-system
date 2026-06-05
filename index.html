@@ -5,171 +5,189 @@
 <title>Booking VAT Enterprise</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  display: flex;
-  background: #f2f5f9;
+body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
+
+/* LOGIN */
+#loginPage {
+  width: 350px;
+  margin: 100px auto;
+}
+
+.login-box {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.login-header {
+  background: #003580;
+  color: white;
+  padding: 20px;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px;
+}
+
+button {
+  padding: 10px;
+  background: #0071c2;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 230px;
-  background: #003580;
-  color: white;
-  height: 100vh;
-  padding: 20px;
+  width: 250px;
+  background:#003580;
+  color:white;
+  height:100vh;
+  padding:20px;
+  display:none;
 }
 
-.sidebar h1 {
-  font-size: 18px;
-  margin-bottom: 5px;
+.sidebar h1 { margin-bottom:5px; }
+.sidebar h2 { font-size:14px; margin-bottom:20px; }
+
+.sidebar .address {
+  font-size:11px;
+  margin-top:40px;
+  line-height:1.4;
 }
 
-.sidebar h2 {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.sidebar button {
-  width: 100%;
-  margin: 6px 0;
-  padding: 12px;
-  background: #0071c2;
-  border: none;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.sidebar button:hover {
-  background: #004f8c;
+.sidebar button, select {
+  width:100%;
+  margin:5px 0;
+  padding:10px;
 }
 
 /* MAIN */
 .main {
-  flex: 1;
-  padding: 20px;
-}
-
-/* HEADER */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-}
-
-/* CARDS */
-.cards {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.card {
-  flex: 1;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
+  flex:1;
+  padding:20px;
+  display:none;
 }
 
 /* TABLE */
-.table-box {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-}
-
 table {
-  width: 100%;
+  width:100%;
+  background:white;
   border-collapse: collapse;
 }
 
 th {
-  background: #003580;
-  color: white;
-  padding: 12px;
+  background:#003580;
+  color:white;
+  padding:10px;
 }
 
 td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-}
-
-tr:hover {
-  background: #f0f7ff;
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #eee;
 }
 
 /* STATUS */
 .status {
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding:5px 10px;
+  border-radius:20px;
 }
-
 .paid { background:#e6f7ec; color:green; }
 .unpaid { background:#fdecea; color:red; }
 
-/* POPUP MODAL */
+/* POPUP */
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
 }
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  width: 300px;
-  margin: 10% auto;
-  border-radius: 10px;
-  text-align: center;
+.modal-box {
+  background:white;
+  padding:20px;
+  width:400px;
+  margin:10% auto;
+}
+
+.info-row {
+  display:flex;
+  justify-content:space-between;
+}
+
+/* FOOTER */
+.footer {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#003580;
+  color:white;
+  text-align:center;
+  padding:10px;
+  font-size:12px;
 }
 
 /* PRINT */
 @media print {
-  .sidebar, .cards, button, .modal { display:none; }
+  .sidebar, .footer, button { display:none; }
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-header">
+      <h2>Booking.com VAT System</h2>
+    </div>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
 <!-- SIDEBAR -->
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
   <h1>Booking.com</h1>
   <h2>VAT System</h2>
+
+  <select onchange="changeYear(this.value)">
+    <option value="2026">2026</option>
+    <option value="2025">2025</option>
+  </select>
 
   <button onclick="filterQuarter('all')">All</button>
   <button onclick="filterQuarter('Q1')">Q1</button>
   <button onclick="filterQuarter('Q2')">Q2</button>
-  <button onclick="exportExcel()">Export Excel</button>
   <button onclick="printReport()">Print</button>
   <button onclick="logout()">Logout</button>
+
+  <div class="address">
+    Oosterdokskade 163<br>
+    1011 DL Amsterdam<br>
+    Netherlands<br><br>
+
+    VAT number: NL805734958B01<br>
+    TIN: 435 075 022 00000<br>
+    Registered No: 31047344<br>
+    https://www.booking.com
+  </div>
 </div>
 
 <!-- MAIN -->
-<div class="main">
+<div class="main" id="main">
+<h2>Bellagio Hills Hotel & Restaurant</h2>
+<h3 id="yearTitle">VAT Report 2026</h3>
 
-<div class="topbar">
-  <h2>Bellagio Hills Hotel & Restaurant</h2>
-</div>
+<h3>Total VAT: ₱ <span id="totalVAT"></span></h3>
 
-<h3>VAT Report 2026</h3>
-
-<!-- CARDS -->
-<div class="cards">
-  <div class="card"><b>Total VAT:</b><br>₱ 3,285.34</div>
-  <div class="card"><b>Paid:</b><br><span id="paidCount"></span></div>
-  <div class="card"><b>Unpaid:</b><br><span id="unpaidCount"></span></div>
-</div>
-
-<!-- TABLE -->
-<div class="table-box">
 <table id="vatTable">
 <thead>
 <tr>
@@ -183,127 +201,135 @@ tr:hover {
 <th>Action</th>
 </tr>
 </thead>
-
-<tbody>
-<tr data-q="Q1">
-<td>January</td><td>4,284.00</td><td>12%</td><td>514.08</td>
-<td><span class="status paid">Paid</span></td><td>Feb-26</td><td>Q1</td>
-<td><button onclick="openModal(this)">View</button></td>
-</tr>
-
-<tr data-q="Q1">
-<td>February</td><td>9,240.00</td><td>12%</td><td>1,108.80</td>
-<td><span class="status paid">Paid</span></td><td>Mar-26</td><td>Q1</td>
-<td><button onclick="openModal(this)">View</button></td>
-</tr>
-
-<tr data-q="Q1">
-<td>March</td><td>2,396.85</td><td>12%</td><td>287.62</td>
-<td><span class="status paid">Paid</span></td><td>Apr-26</td><td>Q1</td>
-<td><button onclick="openModal(this)">View</button></td>
-</tr>
-
-<tr data-q="Q2">
-<td>April</td><td>756.00</td><td>12%</td><td>90.72</td>
-<td><span class="status paid">Paid</span></td><td>May-26</td><td>Q2</td>
-<td><button onclick="openModal(this)">View</button></td>
-</tr>
-
-<tr data-q="Q2">
-<td>May</td><td>10,701.00</td><td>12%</td><td>1,284.12</td>
-<td><span class="status unpaid">Unpaid</span></td><td>Jun-26</td><td>Q2</td>
-<td>-</td>
-</tr>
-
-<tr><td>June</td><td colspan="7">Unavailable</td></tr>
-<tr><td>July</td><td colspan="7">Unavailable</td></tr>
-<tr><td>August</td><td colspan="7">Unavailable</td></tr>
-<tr><td>September</td><td colspan="7">Unavailable</td></tr>
-<tr><td>October</td><td colspan="7">Unavailable</td></tr>
-<tr><td>November</td><td colspan="7">Unavailable</td></tr>
-<tr><td>December</td><td colspan="7">Unavailable</td></tr>
-
-</tbody>
+<tbody></tbody>
 </table>
-</div>
 
 </div>
 
-<!-- ✅ POPUP -->
+<!-- MODAL -->
 <div id="modal" class="modal">
-  <div class="modal-content">
-    <h3>VAT Submission</h3>
-    <p id="mMonth"></p>
-    <p id="mCommission"></p>
-    <p id="mVAT"></p>
-    <p><b>Status: Submitted</b></p>
+  <div class="modal-box">
+    <h3>VAT Payment</h3>
+
+    <div class="info-row">
+      <span id="mMonth"></span>
+      <span id="mCommission"></span>
+      <span id="mVAT"></span>
+    </div>
+
+    <div class="info-row">
+      <b style="color:green;">PAID</b>
+    </div>
+
     <button onclick="closeModal()">Close</button>
   </div>
 </div>
 
+<!-- FOOTER -->
+<div class="footer">
+About Us | Privacy and cookie statements | FAQs<br>
+Share your feedback<br>
+© Copyright Booking.com 2026
+</div>
+
 <script>
 
-// COUNTS
-function calc(){
-  let paid=0, unpaid=0;
-  document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    if(r.children.length>3){
-      if(r.children[4].innerText.includes("Paid")) paid++;
-      if(r.children[4].innerText.includes("Unpaid")) unpaid++;
-    }
-  });
-  paidCount.innerText=paid;
-  unpaidCount.innerText=unpaid;
-}
-calc();
-
-// FILTER
-function filterQuarter(q){
-  document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    if(!r.dataset.q)return;
-    r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
-  });
-}
-
-// EXPORT
-function exportExcel(){
-  let csv="Month,Commission,VAT\n";
-  document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    if(r.children.length>3){
-      csv+=r.children[0].innerText+","+r.children[1].innerText+","+r.children[3].innerText+"\n";
-    }
-  });
-  let link=document.createElement("a");
-  link.href=URL.createObjectURL(new Blob([csv]));
-  link.download="VAT.csv";
-  link.click();
-}
-
-// PRINT
-function printReport(){
-  window.print();
-}
-
-// POPUP
-function openModal(btn){
-  let r = btn.parentElement.parentElement;
-
-  document.getElementById("mMonth").innerText = "Month: " + r.children[0].innerText;
-  document.getElementById("mCommission").innerText = "Commission: ₱ " + r.children[1].innerText;
-  document.getElementById("mVAT").innerText = "VAT: ₱ " + r.children[3].innerText;
-
-  document.getElementById("modal").style.display = "block";
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
+// LOGIN
+function login(){
+  if(user.value==="admin" && pass.value==="1234"){
+    loginPage.style.display="none";
+    sidebar.style.display="block";
+    main.style.display="block";
+  } else alert("Invalid login");
 }
 
 // LOGOUT
 function logout(){
-  localStorage.removeItem("login");
   location.reload();
 }
+
+// DATA
+const data2026 = [
+["January","4284.00","12%","514.08","Paid","Feb-26","Q1"],
+["February","9240.00","12%","1108.80","Paid","Mar-26","Q1"],
+["March","2396.85","12%","287.62","Paid","Apr-26","Q1"],
+["April","756.00","12%","90.72","Paid","May-26","Q2"],
+["May","10701.00","12%","1284.12","Unpaid","Jun-26","Q2"]
+];
+
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// LOAD TABLE
+function load(year){
+  let tb = vatTable.querySelector("tbody");
+  tb.innerHTML="";
+  let total=0;
+
+  if(year==="2026"){
+    data2026.forEach(r=>{
+      total += parseFloat(r[3]) || 0;
+      addRow(r);
+    });
+    for(let i=5;i<12;i++){
+      tb.innerHTML += `<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
+    }
+  }
+
+  if(year==="2025"){
+    months.forEach(m=>{
+      addRow([m,"0.00","","0.00","Unpaid","-","-"]);
+    });
+    total=0;
+  }
+
+  totalVAT.innerText = total.toFixed(2);
+  yearTitle.innerText = "VAT Report " + year;
+}
+
+// ADD ROW
+function addRow(r){
+  let btn = r[4]==="Paid" ? `<button onclick="openModal(this)">View</button>` : "-";
+  let cls = r[4]==="Paid"?"paid":"unpaid";
+
+  vatTable.querySelector("tbody").innerHTML+=`
+  <tr data-q="${r[6]}">
+    <td>${r[0]}</td>
+    <td>${r[1]}</td>
+    <td>${r[2]}</td>
+    <td>${r[3]}</td>
+    <td><span class="status ${cls}">${r[4]}</span></td>
+    <td>${r[5]}</td>
+    <td>${r[6]}</td>
+    <td>${btn}</td>
+  </tr>`;
+}
+
+// YEAR SWITCH
+function changeYear(y){ load(y); }
+
+// FILTER
+function filterQuarter(q){
+  document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+    if(!r.dataset.q) return;
+    r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+  });
+}
+
+// POPUP
+function openModal(btn){
+  let r=btn.parentElement.parentElement;
+  mMonth.innerText="Month: "+r.children[0].innerText;
+  mCommission.innerText="₱ "+r.children[1].innerText;
+  mVAT.innerText="VAT: ₱ "+r.children[3].innerText;
+  modal.style.display="block";
+}
+function closeModal(){ modal.style.display="none"; }
+
+// PRINT
+function printReport(){ window.print(); }
+
+// LOAD DEFAULT
+load("2026");
 
 </script>
 
