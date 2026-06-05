@@ -10,18 +10,12 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 /* LOGIN */
 #loginPage { width:350px; margin:80px auto; }
 .login-box { background:white; border-radius:12px; text-align:center; overflow:hidden; }
-
-.login-header {
-  background:#003580;
-  padding:25px;
-  color:white;
-}
+.login-header { background:#003580; padding:25px; color:white; }
 
 .login-footer {
   font-size:10px;
   margin:15px;
 }
-
 .login-footer span { color:#0071c2; }
 
 input { width:80%; padding:10px; margin:10px; }
@@ -32,7 +26,6 @@ button {
   color:white;
   border:none;
   border-radius:5px;
-  cursor:pointer;
 }
 
 /* SIDEBAR */
@@ -80,6 +73,18 @@ button {
   font-size:12px;
 }
 
+/* HEADERS */
+.company {
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.dashboard-title {
+  font-size:20px;
+  margin-bottom:15px;
+}
+
 /* CARDS */
 .cards {
   display:flex;
@@ -103,23 +108,6 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 /* STATUS */
 .paid { color:green; }
 .unpaid { color:red; }
-
-/* POPUP */
-.modal { display:none; position:fixed; width:100%; height:100%; background:rgba(0,0,0,0.5); }
-
-.modal-box {
-  background:white;
-  padding:25px;
-  width:400px;
-  margin:10% auto;
-  text-align:center;
-}
-
-.paid-highlight {
-  color:green;
-  font-size:18px;
-  margin:20px 0;
-}
 
 /* FOOTER */
 .footer {
@@ -180,7 +168,7 @@ Copyright (2006–2026) Booking.com
 <div class="address">
 Booking.com B.V.<br>
 Oosterdokskade 163<br>
-Amsterdam<br><br>
+1011 DL Amsterdam<br><br>
 
 VAT NL805734958B01<br>
 TIN 43507502200000<br>
@@ -198,7 +186,8 @@ target="_blank">
 ← Go back to main page
 </a>
 
-<h2>VAT Dashboard</h2>
+<div class="company">Bellagio Hills Hotel & Restaurant</div>
+<div class="dashboard-title">VAT Dashboard</div>
 
 <div class="cards">
 <div class="card">Total VAT<br><b id="tot"></b></div>
@@ -220,21 +209,6 @@ target="_blank">
 <tbody></tbody>
 </table>
 
-</div>
-
-<!-- POPUP -->
-<div id="modal" class="modal">
-<div class="modal-box">
-<h3>VAT Details</h3>
-
-<p id="mMonth"></p>
-<p id="mCommission"></p>
-<p id="mVAT"></p>
-
-<div class="paid-highlight">✔ PAID</div>
-
-<button onclick="closeModal()">Close</button>
-</div>
 </div>
 
 <!-- FOOTER -->
@@ -260,8 +234,8 @@ const data2026=[
 
 const data2025={
 January:2511, February:14094, March:3987, April:4770.9,
-May:5859, June:753.3, July:0, August:0,
-September:837, October:4185, November:1674, December:3180.6
+May:5859, June:753.3, September:837,
+October:4185, November:1674, December:3180.6
 };
 
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -283,17 +257,18 @@ function load(year){
 let tb=vatTable.querySelector("tbody");
 tb.innerHTML="";
 
-let total=0,paid=0,unpaid=0;
+let total=0,paidCount=0,unpaidCount=0;
 
 if(year==="2026"){
 
 data2026.forEach(r=>{
 total+=r[2];
-(r[3]=="Paid")?paid++:unpaid++;
+(r[3]=="Paid")?paidCount++:unpaidCount++;
 
 tb.innerHTML+=rowHTML(r);
 });
 
+// unavailable months
 ["June","July","August","September","October","November","December"].forEach(m=>{
 tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unavailable</td></tr>`;
 });
@@ -305,8 +280,8 @@ if(year==="2025"){
 months.forEach(m=>{
 let c=data2025[m]||0;
 let v=c*0.12;
-total+=v;
-unpaid++;
+
+if(c>0){ unpaidCount++; total+=v; }
 
 tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-"]);
 });
@@ -314,8 +289,8 @@ tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-"]);
 }
 
 tot.innerText=peso(total);
-paid.innerText=paid;
-unpaid.innerText=unpaid;
+paid.innerText=paidCount;
+unpaid.innerText=unpaidCount;
 
 }
 
@@ -327,7 +302,7 @@ return `<tr data-q="${r[4]}">
 <td>${peso(r[2])}</td>
 <td class="${r[3]=='Paid'?'paid':'unpaid'}">${r[3]}</td>
 <td>${r[4]}</td>
-<td>${r[3]=='Paid'?'<button onclick="openModal(this)">View</button>':'Unsubmitted'}</td>
+<td>${r[3]=='Paid'?'<button>View</button>':'Unsubmitted'}</td>
 </tr>`;
 }
 
@@ -338,17 +313,6 @@ if(!r.dataset.q || r.dataset.q=="-"){ r.style.display=""; return;}
 r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
 });
 }
-
-// POPUP
-function openModal(btn){
-let r=btn.parentElement.parentElement;
-mMonth.innerText=r.children[0].innerText;
-mCommission.innerText=r.children[1].innerText;
-mVAT.innerText=r.children[2].innerText;
-modal.style.display="block";
-}
-
-function closeModal(){ modal.style.display="none"; }
 
 </script>
 
