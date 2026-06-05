@@ -2,23 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Booking VAT Dashboard</title>
+<title>Booking VAT Enterprise Dashboard</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- ✅ JS LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
-/* GLOBAL */
+/* ✅ GLOBAL */
 body {
   margin: 0;
   font-family: Arial;
   display: flex;
+  background: #f2f5f9;
 }
 
-/* SIDEBAR */
+/* ✅ SIDEBAR */
 .sidebar {
-  width: 220px;
+  width: 230px;
   background: #003580;
   color: white;
   height: 100vh;
@@ -31,26 +32,37 @@ body {
 
 .sidebar button {
   width: 100%;
-  margin: 5px 0;
-  padding: 10px;
+  margin: 6px 0;
+  padding: 12px;
   background: #0071c2;
   border: none;
   color: white;
-  border-radius: 6px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* MAIN */
+.sidebar button:hover {
+  background: #004f8c;
+}
+
+/* ✅ MAIN */
 .main {
   flex: 1;
   padding: 20px;
 }
 
+/* ✅ TOPBAR */
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.logo {
+  width: 140px;
+}
+
+/* ✅ SUMMARY CARDS */
 .cards {
   display: flex;
   gap: 10px;
@@ -59,99 +71,160 @@ body {
 
 .card {
   flex: 1;
-  background: #fff;
+  background: white;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
 }
 
-/* TABLE */
+/* ✅ TABLE */
+.table-box {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
 }
 
 th {
   background: #003580;
   color: white;
-  padding: 10px;
+  padding: 12px;
 }
 
 td {
-  padding: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
   text-align: center;
 }
 
-.paid { color: green; font-weight: bold; }
-.unpaid { color: red; font-weight: bold; }
+tr:hover {
+  background: #f0f7ff;
+}
+
+/* STATUS */
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.paid { background:#e6f7ec; color:green; }
+.unpaid { background:#fdecea; color:red; }
+
+/* PRINT */
+@media print {
+  .sidebar, .cards, button { display:none; }
+  body { display:block; }
+}
+
+/* MOBILE */
+@media(max-width:700px){
+  .cards { flex-direction: column; }
+}
 
 </style>
 </head>
 
 <body>
 
+<!-- ✅ SIDEBAR -->
 <div class="sidebar">
-  <h2>Dashboard</h2>
+  <h2>VAT System</h2>
+
   <button onclick="filterQuarter('all')">All</button>
   <button onclick="filterQuarter('Q1')">Q1</button>
   <button onclick="filterQuarter('Q2')">Q2</button>
   <button onclick="exportExcel()">Export Excel</button>
+  <button onclick="printReport()">Print Report</button>
+  <button onclick="logout()">Logout</button>
 </div>
 
+<!-- ✅ MAIN -->
 <div class="main">
 
 <div class="topbar">
-  <h2>Bellagio Hills Hotel and Restaurant</h2>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg" width="150">
+  <h2>Bellagio Hills Hotel & Restaurant</h2>
+  <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Logo_blue.svg">
 </div>
 
-<h3>Booking.com VAT Report 2026</h3>
+<h3>Booking.com B.V. VAT Report - 2026</h3>
 
+<!-- ✅ CARDS -->
 <div class="cards">
-  <div class="card">Total VAT: <b id="totalVAT"></b></div>
-  <div class="card">Paid: <b id="paidCount"></b></div>
-  <div class="card">Unpaid: <b id="unpaidCount"></b></div>
+  <div class="card"><b>Total VAT:</b><br><span id="totalVAT"></span></div>
+  <div class="card"><b>Paid:</b><br><span id="paidCount"></span></div>
+  <div class="card"><b>Unpaid:</b><br><span id="unpaidCount"></span></div>
 </div>
 
-<canvas id="chart" height="100"></canvas>
-
-<br>
-
+<!-- ✅ TABLE -->
+<div class="table-box">
 <table id="vatTable">
 <thead>
 <tr>
 <th>Month</th>
 <th>Commission</th>
-<th>VAT</th>
+<th>VAT Rate</th>
+<th>VAT Amount</th>
 <th>Status</th>
 <th>Remittance</th>
 <th>Quarter</th>
-<th>PDF</th>
+<th>Invoice</th>
 </tr>
 </thead>
 
 <tbody>
-<tr data-q="Q1"><td>Jan</td><td>4284</td><td>514.08</td><td class="paid">Paid</td><td>Feb-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q1"><td>Feb</td><td>9240</td><td>1108.80</td><td class="paid">Paid</td><td>Mar-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q1"><td>Mar</td><td>2396.85</td><td>287.62</td><td class="paid">Paid</td><td>Apr-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q2"><td>Apr</td><td>756</td><td>90.72</td><td class="paid">Paid</td><td>May-26</td><td>Q2</td><td><button onclick="pdf(this)">PDF</button></td></tr>
-<tr data-q="Q2"><td>May</td><td>10701</td><td>1284.12</td><td class="unpaid">Unpaid</td><td>Jun-26</td><td>Q2</td><td>-</td></tr>
+<tr data-q="Q1"><td>January</td><td>4,284.00</td><td>12%</td><td>514.08</td><td><span class="status paid">Paid</span></td><td>Feb-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
+<tr data-q="Q1"><td>February</td><td>9,240.00</td><td>12%</td><td>1,108.80</td><td><span class="status paid">Paid</span></td><td>Mar-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
+<tr data-q="Q1"><td>March</td><td>2,396.85</td><td>12%</td><td>287.62</td><td><span class="status paid">Paid</span></td><td>Apr-26</td><td>Q1</td><td><button onclick="pdf(this)">PDF</button></td></tr>
+<tr data-q="Q2"><td>April</td><td>756.00</td><td>12%</td><td>90.72</td><td><span class="status paid">Paid</span></td><td>May-26</td><td>Q2</td><td><button onclick="pdf(this)">PDF</button></td></tr>
+<tr data-q="Q2"><td>May</td><td>10,701.00</td><td>12%</td><td>1,284.12</td><td><span class="status unpaid">Unpaid</span></td><td>Jun-26</td><td>Q2</td><td>-</td></tr>
+
+<tr><td>June</td><td colspan="7">Unavailable</td></tr>
+<tr><td>July</td><td colspan="7">Unavailable</td></tr>
+<tr><td>August</td><td colspan="7">Unavailable</td></tr>
+<tr><td>September</td><td colspan="7">Unavailable</td></tr>
+<tr><td>October</td><td colspan="7">Unavailable</td></tr>
+<tr><td>November</td><td colspan="7">Unavailable</td></tr>
+<tr><td>December</td><td colspan="7">Unavailable</td></tr>
 </tbody>
+
 </table>
+</div>
 
 </div>
 
 <script>
 
-// ✅ CALCULATIONS
-function calc() {
+// ✅ LOGIN CHECK (basic security)
+if(localStorage.getItem("login") !== "true"){
+  alert("Please login first.");
+}
+
+// ✅ LOGOUT
+function logout(){
+  localStorage.removeItem("login");
+  location.reload();
+}
+
+// ✅ CALCULATE TOTALS
+function calc(){
   let total=0, paid=0, unpaid=0;
 
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    let v=parseFloat(r.children[2].innerText)||0;
-    total+=v;
-    if(r.children[3].innerText.includes("Paid")) paid++;
-    else unpaid++;
+    if(r.children.length > 3){
+      let v=parseFloat(r.children[3].innerText)||0;
+      total+=v;
+
+      let s=r.children[4].innerText;
+      if(s.includes("Paid")) paid++;
+      if(s.includes("Unpaid")) unpaid++;
+    }
   });
 
   totalVAT.innerText="₱ "+total.toFixed(2);
@@ -160,67 +233,66 @@ function calc() {
 }
 calc();
 
-// ✅ FILTER
+// ✅ FILTER BY QUARTER
 function filterQuarter(q){
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    if(q==="all") r.style.display="";
-    else r.style.display = r.dataset.q===q ? "" : "none";
+    if(!r.dataset.q) return;
+    r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
   });
 }
 
-// ✅ CHART
-new Chart(document.getElementById("chart"), {
-  type: 'bar',
-  data: {
-    labels: ["Jan","Feb","Mar","Apr","May"],
-    datasets: [{
-      label: "VAT",
-      data: [514.08,1108.80,287.62,90.72,1284.12],
-      backgroundColor: '#0071c2'
-    }]
-  }
-});
-
-// ✅ EXPORT EXCEL
+// ✅ EXPORT CSV
 function exportExcel(){
-  let csv="Month,Commission,VAT,Status\n";
+  let csv="Month,Commission,VAT Rate,VAT,Status\n";
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-    csv+=Array.from(r.children).slice(0,4).map(td=>td.innerText).join(",")+"\n";
+    if(r.children.length>3){
+      csv += [
+        r.children[0].innerText,
+        r.children[1].innerText,
+        r.children[2].innerText,
+        r.children[3].innerText,
+        r.children[4].innerText
+      ].join(",") + "\n";
+    }
   });
 
-  let blob = new Blob([csv]);
-  let link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "vat.csv";
-  link.click();
+  let blob=new Blob([csv]);
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="VAT_Report_2026.csv";
+  a.click();
 }
 
-// ✅ PDF (Booking style)
+// ✅ PRINT
+function printReport(){
+  window.print();
+}
+
+// ✅ PDF INVOICE (Professional)
 function pdf(btn){
   let r = btn.parentElement.parentElement;
-  let {jsPDF} = window.jspdf;
+  let { jsPDF } = window.jspdf;
   let doc = new jsPDF();
 
   doc.setTextColor(0,53,128);
   doc.setFontSize(18);
-  doc.text("Booking.com",20,20);
+  doc.text("Booking.com", 20, 20);
 
   doc.setTextColor(0,0,0);
-  doc.text("VAT Invoice",20,30);
+  doc.text("VAT Invoice", 20, 30);
 
-  let y=50;
-  for(let i=0;i<6;i++){
-    doc.text(r.children[i].innerText,20,y);
-    y+=10;
+  let y = 50;
+  for(let i=0;i<7;i++){
+    doc.text(r.children[i].innerText, 20, y);
+    y += 10;
   }
 
-  doc.text("Reference: BIR 2550M",20, y+10);
+  doc.text("BIR Reference: 2550M", 20, y + 10);
 
-  doc.save("invoice.pdf");
+  doc.save("VAT_Invoice.pdf");
 }
 
 </script>
 
 </body>
 </html>
-``
