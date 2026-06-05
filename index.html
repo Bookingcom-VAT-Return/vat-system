@@ -9,40 +9,39 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
 /* LOGIN */
 #loginPage {
-  width: 350px;
-  margin: 100px auto;
+  width:350px;
+  margin:100px auto;
 }
 
 .login-box {
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  text-align: center;
+  background:white;
+  border-radius:10px;
+  text-align:center;
 }
 
 .login-header {
-  background: #003580;
-  color: white;
-  padding: 20px;
+  background:#003580;
+  color:white;
+  padding:20px;
 }
 
 input {
-  width: 80%;
-  padding: 10px;
-  margin: 10px;
+  width:80%;
+  padding:10px;
+  margin:10px;
 }
 
 button {
-  padding: 10px;
-  background: #0071c2;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  padding:10px;
+  background:#0071c2;
+  color:white;
+  border:none;
+  border-radius:5px;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 260px;
+  width:260px;
   background:#003580;
   color:white;
   height:100vh;
@@ -51,32 +50,32 @@ button {
 }
 
 .sidebar h1 { margin-bottom:5px; }
-.sidebar h2 { font-size:14px; margin-bottom:20px; }
+.sidebar h2 { font-size:14px; }
 
-.sidebar .address {
-  font-size:11px;
-  margin-top:40px;
-  line-height:1.5;
-}
-
-.sidebar button, select {
+.sidebar select, .sidebar button {
   width:100%;
   margin:5px 0;
   padding:10px;
 }
 
-/* MAIN */
-.main {
-  flex:1;
-  padding:20px;
-  display:none;
+.address {
+  margin-top:40px;
+  font-size:11px;
+  line-height:1.5;
 }
+
+.address a {
+  color:white;
+}
+
+/* MAIN */
+.main { flex:1; padding:20px; display:none; }
 
 /* TABLE */
 table {
   width:100%;
   background:white;
-  border-collapse: collapse;
+  border-collapse:collapse;
 }
 
 th {
@@ -119,7 +118,6 @@ td {
 .info-row {
   display:flex;
   justify-content:space-between;
-  margin:10px 0;
 }
 
 .paid-highlight {
@@ -136,14 +134,8 @@ td {
   background:#003580;
   color:white;
   text-align:center;
-  padding:10px;
   font-size:12px;
-}
-
-/* LINK STYLE */
-.footer a, .address a {
-  color:white;
-  text-decoration:underline;
+  padding:10px;
 }
 
 /* PRINT */
@@ -191,7 +183,7 @@ td {
 
     VAT number: NL805734958B01<br>
     TIN: 435 075 022 00000<br>
-    Registered No: 31047344<br>
+    Registered No.: 31047344<br>
     <a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
   </div>
 </div>
@@ -248,7 +240,7 @@ Share your feedback<br>
 
 <script>
 
-// ✅ LOGIN
+// LOGIN
 function login(){
   if(user.value==="admin" && pass.value==="1234"){
     loginPage.style.display="none";
@@ -257,65 +249,74 @@ function login(){
   } else alert("Invalid login");
 }
 
-// ✅ LOGOUT
+// LOGOUT
 function logout(){ location.reload(); }
 
-// ✅ FORMAT PESO
-function formatPeso(num){
-  return parseFloat(num).toLocaleString("en-PH", {
-    minimumFractionDigits: 2
-  });
+// FORMAT ₱
+function peso(num){
+  return parseFloat(num).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-// ✅ DATA
+// 2026 DATA
 const data2026 = [
-["January",4284.00,"12%",514.08,"Paid","Feb-26","Q1"],
-["February",9240.00,"12%",1108.80,"Paid","Mar-26","Q1"],
-["March",2396.85,"12%",287.62,"Paid","Apr-26","Q1"],
-["April",756.00,"12%",90.72,"Paid","May-26","Q2"],
-["May",10701.00,"12%",1284.12,"Unpaid","Jun-26","Q2"]
+["January",4284,12,514.08,"Paid","Feb-26","Q1"],
+["February",9240,12,1108.80,"Paid","Mar-26","Q1"],
+["March",2396.85,12,287.62,"Paid","Apr-26","Q1"],
+["April",756,12,90.72,"Paid","May-26","Q2"],
+["May",10701,12,1284.12,"Unpaid","Jun-26","Q2"]
 ];
 
-const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+// 2025 DATA
+const data2025 = {
+January:2511, February:14094, March:3987, April:4770.90,
+May:5859, June:753.30, September:837,
+October:4185, November:1674, December:3180.60
+};
 
-// ✅ LOAD TABLE
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// LOAD
 function load(year){
   let tb = vatTable.querySelector("tbody");
   tb.innerHTML="";
   let total=0;
 
-  if(year==="2026"){
+  if(year=="2026"){
     data2026.forEach(r=>{
-      total += r[3];
+      total+=r[3];
       addRow(r);
     });
+
     for(let i=5;i<12;i++){
-      tb.innerHTML += `<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
+      tb.innerHTML+=`<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
     }
   }
 
-  if(year==="2025"){
+  if(year=="2025"){
     months.forEach(m=>{
-      addRow([m,0,"",0,"Unpaid","-","-"]);
+      let c = data2025[m] || 0;
+      let vat = c * 0.12;
+      total+=vat;
+
+      addRow([m,c,12,vat,"Unpaid","-","-"]);
     });
-    total=0;
   }
 
-  totalVAT.innerText = formatPeso(total);
-  yearTitle.innerText = "VAT Report " + year;
+  totalVAT.innerText=peso(total);
+  yearTitle.innerText="VAT Report "+year;
 }
 
-// ✅ ADD ROW
+// ADD ROW
 function addRow(r){
-  let btn = r[4]==="Paid" ? `<button onclick="openModal(this)">View</button>` : "-";
-  let cls = r[4]==="Paid"?"paid":"unpaid";
+  let btn = r[4]=="Paid" ? `<button onclick="openModal(this)">View</button>` : "Unsubmitted";
+  let cls=r[4]=="Paid"?"paid":"unpaid";
 
   vatTable.querySelector("tbody").innerHTML+=`
   <tr data-q="${r[6]}">
     <td>${r[0]}</td>
-    <td>₱ ${formatPeso(r[1])}</td>
-    <td>${r[2]}</td>
-    <td>₱ ${formatPeso(r[3])}</td>
+    <td>₱ ${peso(r[1])}</td>
+    <td>${r[2]}%</td>
+    <td>₱ ${peso(r[3])}</td>
     <td><span class="status ${cls}">${r[4]}</span></td>
     <td>${r[5]}</td>
     <td>${r[6]}</td>
@@ -323,31 +324,29 @@ function addRow(r){
   </tr>`;
 }
 
-// ✅ CHANGE YEAR
+// YEAR
 function changeYear(y){ load(y); }
 
-// ✅ FILTER
+// FILTER
 function filterQuarter(q){
   document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
     if(!r.dataset.q) return;
-    r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+    r.style.display=(q=="all"||r.dataset.q==q)?"":"none";
   });
 }
 
-// ✅ POPUP
+// POPUP
 function openModal(btn){
   let r=btn.parentElement.parentElement;
-
-  mMonth.innerText = r.children[0].innerText;
-  mCommission.innerText = r.children[1].innerText;
-  mVAT.innerText = r.children[3].innerText;
-
+  mMonth.innerText=r.children[0].innerText;
+  mCommission.innerText=r.children[1].innerText;
+  mVAT.innerText=r.children[3].innerText;
   modal.style.display="block";
 }
 
 function closeModal(){ modal.style.display="none"; }
 
-// ✅ PRINT
+// PRINT
 function printReport(){ window.print(); }
 
 // INIT
