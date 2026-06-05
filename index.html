@@ -7,12 +7,43 @@
 <style>
 body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
-/* LOGIN */
-#loginPage { width:350px; margin:100px auto; }
-.login-box { background:white; border-radius:10px; text-align:center; }
-.login-header { background:#003580; color:white; padding:20px; }
+/* ✅ LOGIN */
+#loginPage {
+  width:350px;
+  margin:100px auto;
+}
 
-input { width:80%; padding:10px; margin:10px; }
+.login-box {
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  text-align:center;
+}
+
+/* Booking header */
+.login-header {
+  background:#003580;
+  padding:25px;
+}
+
+.login-header h1 {
+  color:white;
+  font-size:28px;
+  margin:0;
+}
+
+/* instruction text */
+.login-text {
+  font-size:12px;
+  margin-top:15px;
+  color:#444;
+}
+
+input {
+  width:80%;
+  padding:10px;
+  margin:10px;
+}
 
 button {
   padding:10px;
@@ -23,7 +54,7 @@ button {
   cursor:pointer;
 }
 
-/* SIDEBAR */
+/* ✅ SIDEBAR */
 .sidebar {
   width:260px;
   background:#003580;
@@ -33,7 +64,7 @@ button {
   display:none;
 }
 
-.sidebar select, .sidebar button {
+.sidebar button, .sidebar select {
   width:100%;
   margin:5px 0;
   padding:10px;
@@ -47,8 +78,13 @@ button {
 
 .address a { color:white; }
 
-/* MAIN */
-.main { flex:1; padding:20px; display:none; }
+/* ✅ MAIN */
+.main {
+  flex:1;
+  padding:20px;
+  display:none;
+  position:relative;
+}
 
 /* TOP BUTTON */
 .top-button {
@@ -63,17 +99,34 @@ button {
   border-radius:6px;
 }
 
-/* TABLE */
-table { width:100%; background:white; border-collapse:collapse; }
-th { background:#003580; color:white; padding:10px; }
-td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
+/* ✅ TABLE */
+table {
+  width:100%;
+  background:white;
+  border-collapse:collapse;
+}
+
+th {
+  background:#003580;
+  color:white;
+  padding:10px;
+}
+
+td {
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #eee;
+}
 
 /* STATUS */
-.status { padding:5px 10px; border-radius:20px; }
+.status {
+  padding:5px 10px;
+  border-radius:20px;
+}
 .paid { background:#e6f7ec; color:green; }
 .unpaid { background:#fdecea; color:red; }
 
-/* POPUP */
+/* ✅ POPUP */
 .modal {
   display:none;
   position:fixed;
@@ -101,10 +154,10 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   color:green;
   font-weight:bold;
   font-size:18px;
-  margin:15px 0;
+  margin:20px 0;
 }
 
-/* FOOTER */
+/* ✅ FOOTER */
 .footer {
   position:fixed;
   bottom:0;
@@ -116,7 +169,6 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   padding:10px;
 }
 
-/* PRINT */
 @media print {
   .sidebar, .footer, button, .top-button { display:none; }
 }
@@ -125,19 +177,26 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
 <body>
 
-<!-- LOGIN -->
+<!-- ✅ LOGIN -->
 <div id="loginPage">
   <div class="login-box">
+
     <div class="login-header">
-      <h2>Booking.com VAT System</h2>
+      <h1>Booking.com</h1>
     </div>
+
+    <div class="login-text">
+      Log in to Booking.com B.V. VAT System to proceed
+    </div>
+
     <input id="user" placeholder="Username">
     <input id="pass" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
+
   </div>
 </div>
 
-<!-- SIDEBAR -->
+<!-- ✅ SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <h1>Booking.com</h1>
   <h2>VAT System</h2>
@@ -166,7 +225,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- ✅ MAIN -->
 <div class="main" id="main">
 
 <a class="top-button"
@@ -198,7 +257,7 @@ target="_blank">
 
 </div>
 
-<!-- POPUP -->
+<!-- ✅ POPUP -->
 <div id="modal" class="modal">
   <div class="modal-box">
     <h3>VAT Payment Details</h3>
@@ -215,7 +274,7 @@ target="_blank">
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ✅ FOOTER -->
 <div class="footer">
 About Us | Privacy and cookie statements | FAQs<br>
 Share your feedback<br>
@@ -224,7 +283,7 @@ Share your feedback<br>
 
 <script>
 
-// ✅ LOGIN (UPDATED)
+// ✅ LOGIN
 function login(){
   if(
     user.value==="sales@bellagiohills.com.ph" &&
@@ -240,18 +299,12 @@ function login(){
   } else alert("Invalid login");
 }
 
-// ✅ LOGOUT
-function logout(){
-  localStorage.clear();
-  location.reload();
-}
-
-// ✅ FORMAT PESO
+// ✅ FORMAT
 function peso(n){
   return parseFloat(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-// DATA 2026
+// ✅ 2026 DATA
 const data2026 = [
 ["January",4284,514.08,"Paid","Feb-26","Q1"],
 ["February",9240,1108.80,"Paid","Mar-26","Q1"],
@@ -260,23 +313,11 @@ const data2026 = [
 ["May",10701,1284.12,"Unpaid","","Q2"]
 ];
 
-// DATA 2025
-const data2025 = {
-January:2511, February:14094, March:3987, April:4770.9,
-May:5859, June:753.3, September:837,
-October:4185, November:1674, December:3180.6
-};
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-const months=[
-"January","February","March","April","May",
-"June","July","August","September",
-"October","November","December"
-];
-
-// ✅ LOAD WITH AUTOSAVE
+// ✅ LOAD FIXED
 function load(year){
   localStorage.setItem("year", year);
-
   let tb = vatTable.querySelector("tbody");
   tb.innerHTML="";
   let total=0;
@@ -286,26 +327,22 @@ function load(year){
       total+=r[2];
       addRow([r[0],r[1],12,r[2],r[3],r[4],r[5]]);
     });
-  }
 
-  if(year==="2025"){
-    months.forEach(m=>{
-      let c=data2025[m]||0;
-      let vat=c*0.12;
-      total+=vat;
-      addRow([m,c,12,vat,"Unpaid","-","-"]);
-    });
+    // ✅ RESTORE UNAVAILABLE MONTHS
+    for(let i=5;i<12;i++){
+      tb.innerHTML += `<tr><td>${months[i]}</td><td colspan="7">Unavailable</td></tr>`;
+    }
   }
 
   totalVAT.innerText=peso(total);
   yearTitle.innerText="VAT Report "+year;
 }
 
-// ✅ ADD ROW
+// ✅ ROW
 function addRow(r){
   let btn = r[4]==="Paid"
     ? `<button onclick="openModal(this)">View</button>`
-    : "Unsubmitted";
+    : "Unpaid";
 
   let cls=r[4]==="Paid"?"paid":"unpaid";
 
@@ -322,7 +359,7 @@ function addRow(r){
   </tr>`;
 }
 
-// ✅ YEAR CHANGE
+// ✅ YEAR SWITCH
 function changeYear(y){ load(y); }
 
 // ✅ POPUP
@@ -336,8 +373,8 @@ function openModal(btn){
 
 function closeModal(){ modal.style.display="none"; }
 
-// ✅ PRINT
-function printReport(){ window.print(); }
+// INIT
+load(localStorage.getItem("year") || "2026");
 
 </script>
 
