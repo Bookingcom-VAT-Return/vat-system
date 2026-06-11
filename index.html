@@ -198,12 +198,10 @@ Copyright (2006–2026) Booking.com™
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-
 <h2>Booking.com</h2>
 
-<select onchange="load(this.value)">
+<select onchange="load()">
 <option value="2026">2026</option>
-<option value="2025">2025</option>
 </select>
 
 <button onclick="filterQuarter('all')">All</button>
@@ -219,15 +217,16 @@ Netherlands<br><br>
 VAT number: NL805734958B01<br>
 TIN: 435 075 022 00000<br>
 Registered No.: 31047344<br>
-www.booking.com" target="_blank">https://www.booking.com</a>
+<a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
 </div>
-
 </div>
 
 <!-- MAIN -->
 <div class="main" id="main">
 
-#="top-button">← Go back to main page</a>
+<a href="https://www.booking.com" target="_blank" class="top-button">
+← Go back to main page
+</a>
 
 <div class="company">Bellagio Hills Hotel & Restaurant</div>
 <div class="dashboard-title">VAT Dashboard</div>
@@ -292,7 +291,7 @@ pass.value==="GMBellagiohills#2025"){
 loginPage.style.display="none";
 sidebar.style.display="block";
 main.style.display="block";
-load("2026");
+load();
 }
 }
 
@@ -331,24 +330,20 @@ ${r[3]=='Paid'
 function payVAT(btn){
 let row = btn.parentElement.parentElement;
 
-// show processing
 btn.innerText = "Processing...";
 btn.disabled = true;
 
-// wait 1 minute
+// ✅ 3 MINUTES = 180000 ms
 setTimeout(()=>{
-// update status
 row.children[3].innerText = "Paid";
 row.children[3].className = "paid";
 
-// change button to view
 btn.outerHTML = `<button class="view-btn" onclick="openModal(this)">View</button>`;
 
-// update counters
 paid.innerText = Number(paid.innerText)+1;
 unpaid.innerText = Number(unpaid.innerText)-1;
 
-},60000);
+},180000);
 }
 
 function openModal(btn){
@@ -361,6 +356,12 @@ modal.style.display="block";
 
 function closeModal(){
 modal.style.display="none";
+}
+
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+});
 }
 </script>
 
