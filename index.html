@@ -61,9 +61,7 @@ button {
   line-height:1.5;
 }
 
-.address a {
-  color:white;
-}
+.address a { color:white; }
 
 /* MAIN */
 .main {
@@ -85,19 +83,10 @@ button {
   text-decoration:none;
   font-size:12px;
 }
-.top-button:hover { background:#005999; }
 
 /* HEADERS */
-.company {
-  font-size:24px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.dashboard-title {
-  font-size:18px;
-  margin-bottom:20px;
-}
+.company { font-size:24px; font-weight:bold; }
+.dashboard-title { font-size:18px; margin-bottom:20px; }
 
 /* CARDS */
 .cards {
@@ -133,25 +122,19 @@ td {
   border-bottom:1px solid #eee;
 }
 
-/* STATUS */
 .paid { color:green; }
 .unpaid { color:red; }
 
-/* VIEW BUTTON */
 .view-btn {
   background:#0071c2;
   color:white;
   padding:6px 12px;
   border-radius:12px;
   border:none;
-  font-size:12px;
   cursor:pointer;
 }
-.view-btn:hover {
-  background:#005999;
-}
 
-/* POPUP */
+/* MODAL */
 .modal {
   display:none;
   position:fixed;
@@ -167,12 +150,6 @@ td {
   margin:10% auto;
   text-align:center;
   border-radius:10px;
-}
-
-.paid-highlight {
-  color:green;
-  font-size:18px;
-  margin:20px 0;
 }
 
 /* FOOTER */
@@ -194,37 +171,22 @@ td {
 <!-- LOGIN -->
 <div id="loginPage">
 <div class="login-box">
-
 <div class="login-header">
 <h1>Booking.com</h1>
 <div style="font-size:12px;">VAT SYSTEM</div>
 </div>
 
-<div style="font-size:12px; margin:10px;">
-Log in to Booking.com B.V. VAT System to proceed
-</div>
-
 <input id="user" placeholder="Username">
 <input id="pass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
-
-<div class="login-footer">
-Do you have questions about your property or the Extranet?<br>
-Visit <span>Partner Help</span><br><br>
-By signing in or creating an account, you agree with our Terms & Conditions and Privacy Statement<br>
-All rights reserved.<br>
-Copyright (2006–2026) Booking.com™
-</div>
-
 </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-
 <h2>Booking.com</h2>
 
-<select onchange="load(this.value)" id="yearSelect">
+<select onchange="load(this.value)">
 <option value="2026">2026</option>
 <option value="2025">2025</option>
 </select>
@@ -232,36 +194,17 @@ Copyright (2006–2026) Booking.com™
 <button onclick="filterQuarter('all')">All</button>
 <button onclick="filterQuarter('Q1')">Q1</button>
 <button onclick="filterQuarter('Q2')">Q2</button>
-
-<div class="address">
-Booking.com B.V.<br>
-Oosterdokskade 163<br>
-1011 DL Amsterdam<br>
-Netherlands<br><br>
-
-VAT number: NL805734958B01<br>
-TIN: 435 075 022 00000<br>
-Registered No.: 31047344<br>
-<a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
-</div>
-
 </div>
 
 <!-- MAIN -->
 <div class="main" id="main">
-
-<a href="https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/finance_invoices.html?hotel_id=10810275&lang=xu&ses=46366be37f83444108b07e7ce06b32b9&source=nav"
-class="top-button" target="_blank">
-← Go back to main page
-</a>
-
 <div class="company">Bellagio Hills Hotel & Restaurant</div>
 <div class="dashboard-title">VAT Dashboard</div>
 
 <div class="cards">
 <div class="card">Total VAT<br><b id="tot"></b></div>
 <div class="card">Paid<br><b id="paid"></b></div>
-<div class="card">Unpaid<br><b id="unpaid" style="color:red;"></b></div>
+<div class="card">Unpaid<br><b id="unpaid"></b></div>
 </div>
 
 <table id="vatTable">
@@ -277,38 +220,27 @@ class="top-button" target="_blank">
 </thead>
 <tbody></tbody>
 </table>
-
 </div>
 
-<!-- POPUP -->
+<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>VAT Details</h3>
-
 <p id="mMonth"></p>
 <p id="mCommission"></p>
 <p id="mVAT"></p>
-
-<div class="paid-highlight">✔ PAID</div>
-
+<div class="paid">✔ PAID</div>
 <button onclick="closeModal()">Close</button>
 </div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-About Us | Privacy and cookie statements | FAQs<br>
-Share your feedback<br>
-© Copyright Booking.com 2026
-</div>
+<div class="footer">© Booking VAT System</div>
 
 <script>
-
 function peso(n){
 return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
-// DATA
 const data2026=[
 ["January",4284,514,"Paid","Q1"],
 ["February",9240,1108,"Paid","Q1"],
@@ -317,15 +249,6 @@ const data2026=[
 ["May",10701,1284,"Unpaid","Q2"]
 ];
 
-const data2025={
-January:2511, February:14094, March:3987, April:4770.9,
-May:5859, June:753.3, July:0, August:0,
-September:837, October:4185, November:1674, December:3180.6
-};
-
-const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-// LOGIN
 function login(){
 if(user.value==="sales@bellagiohills.com.ph" &&
 pass.value==="GMBellagiohills#2025"){
@@ -336,37 +259,69 @@ load("2026");
 }
 }
 
-// LOAD
 function load(year){
-
 let tb=vatTable.querySelector("tbody");
 tb.innerHTML="";
 
 let total=0, paidCount=0, unpaidCount=0;
 
-// ✅ 2026
-if(year==="2026"){
 data2026.forEach(r=>{
 total+=r[2];
 (r[3]=="Paid")?paidCount++:unpaidCount++;
-
 tb.innerHTML+=rowHTML(r);
 });
 
-["June","July","August","September","October","November","December"].forEach(m=>{
-tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unavailable</td></tr>`;
+tot.innerText=peso(total);
+paid.innerText=paidCount;
+unpaid.innerText=unpaidCount;
+}
+
+function rowHTML(r){
+return `<tr data-q="${r[4]}">
+<td>${r[0]}</td>
+<td>${peso(r[1])}</td>
+<td>${peso(r[2])}</td>
+<td class="${r[3]=='Paid'?'paid':'unpaid'}">${r[3]}</td>
+<td>${r[4]}</td>
+<td>
+${r[3]=='Paid'
+? `<button class="view-btn" onclick="openModal(this)">View</button>`
+: `<button class="view-btn" onclick="payVAT(this)">Pay</button>`}
+</td>
+</tr>`;
+}
+
+function payVAT(btn){
+let row = btn.parentElement.parentElement;
+
+// change status
+row.children[3].innerText = "Paid";
+row.children[3].className = "paid";
+
+// change button
+btn.outerHTML = `<button class="view-btn" onclick="openModal(this)">View</button>`;
+
+// update counts
+paid.innerText = Number(paid.innerText)+1;
+unpaid.innerText = Number(unpaid.innerText)-1;
+}
+
+function openModal(btn){
+let r=btn.parentElement.parentElement;
+mMonth.innerText="Month: "+r.children[0].innerText;
+mCommission.innerText="Commission: "+r.children[1].innerText;
+mVAT.innerText="VAT: "+r.children[2].innerText;
+modal.style.display="block";
+}
+
+function closeModal(){ modal.style.display="none"; }
+
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
 });
 }
+</script>
 
-// ✅ ✅ FIXED 2025
-if(year==="2025"){
-months.forEach(m=>{
-let c=data2025[m]||0;
-let v=c*0.12;
-
-if(c>0){
-total+=v;
-unpaidCount++;
-}
-
-tb.innerHTML+=rowHTML([m,c,v,"Unpaid
+</body>
+</html>
