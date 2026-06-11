@@ -11,7 +11,11 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 #loginPage { width:360px; margin:80px auto; }
 .login-box { background:white; border-radius:12px; text-align:center; overflow:hidden; }
 
-.login-header { background:#003580; padding:25px; color:white; }
+.login-header {
+  background:#003580;
+  padding:25px;
+  color:white;
+}
 
 .login-footer {
   font-size:11px;
@@ -20,7 +24,11 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 }
 .login-footer span { color:#0071c2; }
 
-input { width:80%; padding:10px; margin:10px; }
+input {
+  width:80%;
+  padding:10px;
+  margin:10px;
+}
 
 button {
   padding:10px;
@@ -52,6 +60,7 @@ button {
   font-size:11px;
   line-height:1.5;
 }
+
 .address a { color:white; }
 
 /* MAIN */
@@ -62,7 +71,7 @@ button {
   position:relative;
 }
 
-/* TOP BUTTON */
+/* GO BACK */
 .top-button {
   position:absolute;
   right:20px;
@@ -71,12 +80,17 @@ button {
   color:white;
   padding:8px 12px;
   border-radius:6px;
-  font-size:12px;
   text-decoration:none;
+  font-size:12px;
 }
+
+/* HEADERS */
+.company { font-size:24px; font-weight:bold; margin-bottom:10px; }
+.dashboard-title { font-size:18px; margin-bottom:20px; }
 
 /* CARDS */
 .cards { display:flex; gap:10px; margin:15px 0; }
+
 .card {
   flex:1;
   background:white;
@@ -87,11 +101,31 @@ button {
 
 /* TABLE */
 table { width:100%; background:white; border-collapse:collapse; }
-th { background:#003580; color:white; padding:10px; }
-td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
+th {
+  background:#003580;
+  color:white;
+  padding:10px;
+}
+
+td {
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #eee;
+}
+
+/* STATUS */
 .paid { color:green; }
 .unpaid { color:red; }
+
+.view-btn {
+  background:#0071c2;
+  color:white;
+  padding:6px 12px;
+  border-radius:12px;
+  border:none;
+  font-size:12px;
+}
 
 /* MODAL */
 .modal {
@@ -105,7 +139,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 .modal-box {
   background:white;
   padding:25px;
-  width:350px;
+  width:400px;
   margin:10% auto;
   text-align:center;
   border-radius:10px;
@@ -157,7 +191,6 @@ Copyright (2006–2026) Booking.com™
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-
 <h2>Booking.com</h2>
 
 <select onchange="load(this.value)">
@@ -180,22 +213,22 @@ TIN: 435 075 022 00000<br>
 Registered No.: 31047344<br>
 <a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
 </div>
-
 </div>
 
 <!-- MAIN -->
 <div class="main" id="main">
 
-<a href="https://www.booking.com" target="_blank" class="top-button">
+<a href="https://admin.booking.com" class="top-button" target="_blank">
 ← Go back to main page
 </a>
 
-<h2>Bellagio Hills Hotel & Restaurant</h2>
+<div class="company">Bellagio Hills Hotel & Restaurant</div>
+<div class="dashboard-title">VAT Dashboard</div>
 
 <div class="cards">
 <div class="card">Total VAT<br><b id="tot"></b></div>
 <div class="card">Paid<br><b id="paid"></b></div>
-<div class="card">Unpaid<br><b id="unpaid"></b></div>
+<div class="card">Unpaid<br><b id="unpaid" style="color:red;"></b></div>
 </div>
 
 <table id="vatTable">
@@ -214,17 +247,18 @@ Registered No.: 31047344<br>
 
 </div>
 
-<!-- VAT MODAL -->
+<!-- VAT POPUP -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>VAT Details</h3>
 <p id="mMonth"></p>
+<p id="mCommission"></p>
 <p id="mVAT"></p>
 <button onclick="closeModal()">Close</button>
 </div>
 </div>
 
-<!-- RECEIPT POPUP -->
+<!-- ✅ RECEIPT POPUP -->
 <div id="receiptModal" class="modal">
 <div class="modal-box">
 <h3>✅ Payment Successful</h3>
@@ -248,6 +282,7 @@ function peso(n){
 return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
+// DATA
 const data2026=[
 ["January",4284,514,"Paid","Q1"],
 ["February",9240,1108,"Paid","Q1"],
@@ -256,6 +291,15 @@ const data2026=[
 ["May",10701,1284,"Unpaid","Q2"]
 ];
 
+const data2025={
+January:2511, February:14094, March:3987, April:4770.9,
+May:5859, June:753.3, July:0, August:0,
+September:837, October:4185, November:1674, December:3180.6
+};
+
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// LOGIN
 function login(){
 if(user.value==="sales@bellagiohills.com.ph" &&
 pass.value==="GMBellagiohills#2025"){
@@ -266,23 +310,37 @@ load("2026");
 }
 }
 
+// LOAD
 function load(year){
+
 let tb=vatTable.querySelector("tbody");
 tb.innerHTML="";
 
 let total=0, paidCount=0, unpaidCount=0;
 
+// 2026
 if(year==="2026"){
-
 data2026.forEach(r=>{
 total+=r[2];
-r[3]=="Paid"?paidCount++:unpaidCount++;
+(r[3]=="Paid")?paidCount++:unpaidCount++;
+
 tb.innerHTML+=rowHTML(r);
 });
 
-// ✅ JUNE–DECEMBER
 ["June","July","August","September","October","November","December"].forEach(m=>{
 tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unsubmitted</td></tr>`;
+});
+}
+
+// 2025
+if(year==="2025"){
+months.forEach(m=>{
+let c=data2025[m]||0;
+let v=c*0.12;
+
+if(c>0){ total+=v; unpaidCount++; }
+
+tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-"]);
 });
 }
 
@@ -291,6 +349,7 @@ paid.innerText=paidCount;
 unpaid.innerText=unpaidCount;
 }
 
+// ✅ ROW UPDATED (with PAY button)
 function rowHTML(r){
 return `<tr data-q="${r[4]}">
 <td>${r[0]}</td>
@@ -300,12 +359,13 @@ return `<tr data-q="${r[4]}">
 <td>${r[4]}</td>
 <td>
 ${r[3]=='Paid'
-? `<button onclick="openModal(this)">View</button>`
-: `<button onclick="payVAT(this)">Pay</button>`}
+? `<button class="view-btn" onclick="openModal(this)">View</button>`
+: `<button class="view-btn" onclick="payVAT(this)">Pay</button>`}
 </td>
 </tr>`;
 }
 
+// ✅ PAY FUNCTION (15 seconds)
 function payVAT(btn){
 let row = btn.parentElement.parentElement;
 
@@ -313,21 +373,20 @@ btn.innerText="Processing...";
 btn.disabled=true;
 
 setTimeout(()=>{
-
 row.children[3].innerText="Paid";
 row.children[3].className="paid";
 
-btn.outerHTML=`<button onclick="openModal(this)">View</button>`;
+btn.outerHTML=`<button class="view-btn" onclick="openModal(this)">View</button>`;
 
 paid.innerText++;
 unpaid.innerText--;
 
-// receipt
 showReceipt(row);
 
-},45000);
+},15000);
 }
 
+// ✅ RECEIPT
 function showReceipt(row){
 let ref="REF"+Math.floor(Math.random()*999999999);
 
@@ -341,21 +400,27 @@ receiptModal.style.display="block";
 
 function closeReceipt(){ receiptModal.style.display="none"; }
 
+// FILTER
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+if(!r.dataset.q || r.dataset.q=="-"){
+r.style.display="";
+return;
+}
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+});
+}
+
+// POPUP
 function openModal(btn){
 let r=btn.parentElement.parentElement;
 mMonth.innerText="Month: "+r.children[0].innerText;
+mCommission.innerText="Commission: "+r.children[1].innerText;
 mVAT.innerText="VAT: "+r.children[2].innerText;
 modal.style.display="block";
 }
 
 function closeModal(){ modal.style.display="none"; }
-
-function filterQuarter(q){
-document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-if(!r.dataset.q){ r.style.display=""; return;}
-r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
-});
-}
 </script>
 
 </body>
