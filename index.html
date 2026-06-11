@@ -13,22 +13,13 @@ body { margin:0; font-family:Arial; display:flex; background:#f2f5f9; }
 
 .login-header { background:#003580; padding:25px; color:white; }
 
-/* FOOTERS */
-.login-footer, .footer {
+.login-footer {
   font-size:11px;
   padding:15px;
   line-height:1.4;
-  text-align:center;
 }
-.footer {
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:#003580;
-  color:white;
-}
+.login-footer span { color:#0071c2; }
 
-/* INPUT */
 input { width:80%; padding:10px; margin:10px; }
 
 button {
@@ -50,16 +41,51 @@ button {
   display:none;
 }
 
+.sidebar select, .sidebar button {
+  width:100%;
+  margin:5px 0;
+  padding:10px;
+}
+
+.address {
+  margin-top:40px;
+  font-size:11px;
+  line-height:1.5;
+}
+.address a { color:white; }
+
 /* MAIN */
 .main {
   flex:1;
   padding:20px;
   display:none;
+  position:relative;
 }
 
-.cards { display:flex; gap:10px; }
-.card { flex:1; background:white; padding:15px; border-radius:10px; text-align:center; }
+/* TOP BUTTON */
+.top-button {
+  position:absolute;
+  right:20px;
+  top:20px;
+  background:#0071c2;
+  color:white;
+  padding:8px 12px;
+  border-radius:6px;
+  font-size:12px;
+  text-decoration:none;
+}
 
+/* CARDS */
+.cards { display:flex; gap:10px; margin:15px 0; }
+.card {
+  flex:1;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+}
+
+/* TABLE */
 table { width:100%; background:white; border-collapse:collapse; }
 th { background:#003580; color:white; padding:10px; }
 td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
@@ -67,7 +93,7 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 .paid { color:green; }
 .unpaid { color:red; }
 
-/* MODALS */
+/* MODAL */
 .modal {
   display:none;
   position:fixed;
@@ -85,8 +111,17 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
   border-radius:10px;
 }
 
-/* RECEIPT */
-.success { color:green; font-size:18px; margin-bottom:10px; }
+/* FOOTER */
+.footer {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#003580;
+  color:white;
+  text-align:center;
+  font-size:12px;
+  padding:10px;
+}
 </style>
 </head>
 
@@ -98,7 +133,11 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 
 <div class="login-header">
 <h1>Booking.com</h1>
-<div>VAT SYSTEM</div>
+<div style="font-size:12px;">VAT SYSTEM</div>
+</div>
+
+<div style="font-size:12px; margin:10px;">
+Log in to Booking.com B.V. VAT System to proceed
 </div>
 
 <input id="user" placeholder="Username">
@@ -106,8 +145,11 @@ td { padding:8px; text-align:center; border-bottom:1px solid #eee; }
 <button onclick="login()">Login</button>
 
 <div class="login-footer">
-Do you have questions?<br>Visit Partner Help<br><br>
-© Booking.com 2026
+Do you have questions about your property or the Extranet?<br>
+Visit <span>Partner Help</span><br><br>
+By signing in or creating an account, you agree with our Terms & Conditions and Privacy Statement<br>
+All rights reserved.<br>
+Copyright (2006–2026) Booking.com™
 </div>
 
 </div>
@@ -115,18 +157,40 @@ Do you have questions?<br>Visit Partner Help<br><br>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
+
 <h2>Booking.com</h2>
 
 <select onchange="load(this.value)">
 <option value="2026">2026</option>
 <option value="2025">2025</option>
 </select>
+
+<button onclick="filterQuarter('all')">All</button>
+<button onclick="filterQuarter('Q1')">Q1</button>
+<button onclick="filterQuarter('Q2')">Q2</button>
+
+<div class="address">
+Booking.com B.V.<br>
+Oosterdokskade 163<br>
+1011 DL Amsterdam<br>
+Netherlands<br><br>
+
+VAT number: NL805734958B01<br>
+TIN: 435 075 022 00000<br>
+Registered No.: 31047344<br>
+<a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
+</div>
+
 </div>
 
 <!-- MAIN -->
 <div class="main" id="main">
 
-<h2>Bellagio Hills Hotel</h2>
+<a href="https://www.booking.com" target="_blank" class="top-button">
+← Go back to main page
+</a>
+
+<h2>Bellagio Hills Hotel & Restaurant</h2>
 
 <div class="cards">
 <div class="card">Total VAT<br><b id="tot"></b></div>
@@ -137,7 +201,12 @@ Do you have questions?<br>Visit Partner Help<br><br>
 <table id="vatTable">
 <thead>
 <tr>
-<th>Month</th><th>VAT</th><th>Status</th><th>Action</th>
+<th>Month</th>
+<th>Commission</th>
+<th>VAT</th>
+<th>Status</th>
+<th>Quarter</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -148,30 +217,30 @@ Do you have questions?<br>Visit Partner Help<br><br>
 <!-- VAT MODAL -->
 <div id="modal" class="modal">
 <div class="modal-box">
+<h3>VAT Details</h3>
 <p id="mMonth"></p>
 <p id="mVAT"></p>
 <button onclick="closeModal()">Close</button>
 </div>
 </div>
 
-<!-- ✅ RECEIPT POPUP -->
+<!-- RECEIPT POPUP -->
 <div id="receiptModal" class="modal">
 <div class="modal-box">
-<div class="success">✅ Payment Successful</div>
-
+<h3>✅ Payment Successful</h3>
 <p id="rRef"></p>
 <p id="rMonth"></p>
 <p id="rDate"></p>
 <p id="rAmount"></p>
-
 <button onclick="closeReceipt()">Close</button>
 </div>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-About | Privacy | FAQs<br>
-© Booking.com 2026
+About Us | Privacy and cookie statements | FAQs<br>
+Share your feedback<br>
+© Copyright Booking.com 2026
 </div>
 
 <script>
@@ -180,11 +249,11 @@ return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
 const data2026=[
-["January",514,"Paid"],
-["February",1108,"Paid"],
-["March",287,"Paid"],
-["April",90,"Paid"],
-["May",1284,"Unpaid"]
+["January",4284,514,"Paid","Q1"],
+["February",9240,1108,"Paid","Q1"],
+["March",2396,287,"Paid","Q1"],
+["April",756,90,"Paid","Q2"],
+["May",10701,1284,"Unpaid","Q2"]
 ];
 
 function login(){
@@ -197,17 +266,25 @@ load("2026");
 }
 }
 
-function load(){
+function load(year){
 let tb=vatTable.querySelector("tbody");
 tb.innerHTML="";
 
 let total=0, paidCount=0, unpaidCount=0;
 
+if(year==="2026"){
+
 data2026.forEach(r=>{
-total+=r[1];
-(r[2]=="Paid")?paidCount++:unpaidCount++;
+total+=r[2];
+r[3]=="Paid"?paidCount++:unpaidCount++;
 tb.innerHTML+=rowHTML(r);
 });
+
+// ✅ JUNE–DECEMBER
+["June","July","August","September","October","November","December"].forEach(m=>{
+tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unsubmitted</td></tr>`;
+});
+}
 
 tot.innerText=peso(total);
 paid.innerText=paidCount;
@@ -215,12 +292,14 @@ unpaid.innerText=unpaidCount;
 }
 
 function rowHTML(r){
-return `<tr>
+return `<tr data-q="${r[4]}">
 <td>${r[0]}</td>
 <td>${peso(r[1])}</td>
-<td class="${r[2]=='Paid'?'paid':'unpaid'}">${r[2]}</td>
+<td>${peso(r[2])}</td>
+<td class="${r[3]=='Paid'?'paid':'unpaid'}">${r[3]}</td>
+<td>${r[4]}</td>
 <td>
-${r[2]=='Paid'
+${r[3]=='Paid'
 ? `<button onclick="openModal(this)">View</button>`
 : `<button onclick="payVAT(this)">Pay</button>`}
 </td>
@@ -229,50 +308,53 @@ ${r[2]=='Paid'
 
 function payVAT(btn){
 let row = btn.parentElement.parentElement;
+
 btn.innerText="Processing...";
 btn.disabled=true;
 
-// ✅ 45 seconds
 setTimeout(()=>{
 
-row.children[2].innerText="Paid";
-row.children[2].className="paid";
+row.children[3].innerText="Paid";
+row.children[3].className="paid";
 
 btn.outerHTML=`<button onclick="openModal(this)">View</button>`;
 
 paid.innerText++;
 unpaid.innerText--;
 
-// ✅ SHOW RECEIPT
+// receipt
 showReceipt(row);
 
 },45000);
 }
 
 function showReceipt(row){
-let ref = "REF"+Math.floor(Math.random()*999999999);
+let ref="REF"+Math.floor(Math.random()*999999999);
 
-rRef.innerText = "Reference: " + ref;
-rMonth.innerText = "Month: " + row.children[0].innerText;
-rDate.innerText = "Date: " + new Date().toLocaleDateString();
-rAmount.innerText = "Amount: " + row.children[1].innerText;
+rRef.innerText="Reference: "+ref;
+rMonth.innerText="Month: "+row.children[0].innerText;
+rDate.innerText="Date: "+new Date().toLocaleDateString();
+rAmount.innerText="Amount: "+row.children[2].innerText;
 
 receiptModal.style.display="block";
 }
 
-function closeReceipt(){
-receiptModal.style.display="none";
-}
+function closeReceipt(){ receiptModal.style.display="none"; }
 
 function openModal(btn){
 let r=btn.parentElement.parentElement;
 mMonth.innerText="Month: "+r.children[0].innerText;
-mVAT.innerText="VAT: "+r.children[1].innerText;
+mVAT.innerText="VAT: "+r.children[2].innerText;
 modal.style.display="block";
 }
 
-function closeModal(){
-modal.style.display="none";
+function closeModal(){ modal.style.display="none"; }
+
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+if(!r.dataset.q){ r.style.display=""; return;}
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+});
 }
 </script>
 
