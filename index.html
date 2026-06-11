@@ -61,7 +61,9 @@ button {
   line-height:1.5;
 }
 
-.address a { color:white; }
+.address a {
+  color:white;
+}
 
 /* MAIN */
 .main {
@@ -84,7 +86,6 @@ button {
   font-size:12px;
 }
 
-/* HEADERS */
 .company { font-size:24px; font-weight:bold; margin-bottom:10px; }
 .dashboard-title { font-size:18px; margin-bottom:20px; }
 
@@ -193,7 +194,7 @@ Copyright (2006–2026) Booking.com™
 <div class="sidebar" id="sidebar">
 <h2>Booking.com</h2>
 
-<select onchange="load(this.value)">
+<select onchange="load(this.value)" id="yearSelect">
 <option value="2026">2026</option>
 <option value="2025">2025</option>
 </select>
@@ -213,6 +214,7 @@ TIN: 435 075 022 00000<br>
 Registered No.: 31047344<br>
 <a href="https://www.booking.com" target="_blank">https://www.booking.com</a>
 </div>
+
 </div>
 
 <!-- MAIN -->
@@ -247,26 +249,15 @@ Registered No.: 31047344<br>
 
 </div>
 
-<!-- VAT POPUP -->
+<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>VAT Details</h3>
 <p id="mMonth"></p>
 <p id="mCommission"></p>
 <p id="mVAT"></p>
+<p id="mRef"></p>
 <button onclick="closeModal()">Close</button>
-</div>
-</div>
-
-<!-- ✅ RECEIPT POPUP -->
-<div id="receiptModal" class="modal">
-<div class="modal-box">
-<h3>✅ Payment Successful</h3>
-<p id="rRef"></p>
-<p id="rMonth"></p>
-<p id="rDate"></p>
-<p id="rAmount"></p>
-<button onclick="closeReceipt()">Close</button>
 </div>
 </div>
 
@@ -282,13 +273,18 @@ function peso(n){
 return "₱ "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2});
 }
 
+// ✅ Generate random ref
+function genRef(){
+return "REF"+Math.floor(Math.random()*999999999);
+}
+
 // DATA
 const data2026=[
-["January",4284,514,"Paid","Q1"],
-["February",9240,1108,"Paid","Q1"],
-["March",2396,287,"Paid","Q1"],
-["April",756,90,"Paid","Q2"],
-["May",10701,1284,"Unpaid","Q2"]
+["January",4284,514,"Paid","Q1",genRef()],
+["February",9240,1108,"Paid","Q1",genRef()],
+["March",2396,287,"Paid","Q1",genRef()],
+["April",756,90,"Paid","Q2",genRef()],
+["May",10701,1284,"Unpaid","Q2",""]
 ];
 
 const data2025={
@@ -318,21 +314,19 @@ tb.innerHTML="";
 
 let total=0, paidCount=0, unpaidCount=0;
 
-// 2026
 if(year==="2026"){
 data2026.forEach(r=>{
 total+=r[2];
-(r[3]=="Paid")?paidCount++:unpaidCount++;
+r[3]=="Paid"?paidCount++:unpaidCount++;
 
 tb.innerHTML+=rowHTML(r);
 });
 
 ["June","July","August","September","October","November","December"].forEach(m=>{
-tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unsubmitted</td></tr>`;
+tb.innerHTML+=`<tr><td>${m}</td><td colspan="5">Unavailable</td></tr>`;
 });
 }
 
-// 2025
 if(year==="2025"){
 months.forEach(m=>{
 let c=data2025[m]||0;
@@ -340,7 +334,7 @@ let v=c*0.12;
 
 if(c>0){ total+=v; unpaidCount++; }
 
-tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-"]);
+tb.innerHTML+=rowHTML([m,c,v,"Unpaid","-",""]);
 });
 }
 
@@ -349,9 +343,9 @@ paid.innerText=paidCount;
 unpaid.innerText=unpaidCount;
 }
 
-// ✅ ROW UPDATED (with PAY button)
+// ROW
 function rowHTML(r){
-return `<tr data-q="${r[4]}">
+return `<tr data-ref="${r[5] || ''}">
 <td>${r[0]}</td>
 <td>${peso(r[1])}</td>
 <td>${peso(r[2])}</td>
@@ -365,7 +359,7 @@ ${r[3]=='Paid'
 </tr>`;
 }
 
-// ✅ PAY FUNCTION (15 seconds)
+// ✅ PAY
 function payVAT(btn){
 let row = btn.parentElement.parentElement;
 
@@ -373,6 +367,10 @@ btn.innerText="Processing...";
 btn.disabled=true;
 
 setTimeout(()=>{
+
+let ref = genRef();
+row.dataset.ref = ref;
+
 row.children[3].innerText="Paid";
 row.children[3].className="paid";
 
@@ -381,46 +379,28 @@ btn.outerHTML=`<button class="view-btn" onclick="openModal(this)">View</button>`
 paid.innerText++;
 unpaid.innerText--;
 
-showReceipt(row);
-
-},15000);
+},10000);
 }
 
-// ✅ RECEIPT
-function showReceipt(row){
-let ref="REF"+Math.floor(Math.random()*999999999);
-
-rRef.innerText="Reference: "+ref;
-rMonth.innerText="Month: "+row.children[0].innerText;
-rDate.innerText="Date: "+new Date().toLocaleDateString();
-rAmount.innerText="Amount: "+row.children[2].innerText;
-
-receiptModal.style.display="block";
-}
-
-function closeReceipt(){ receiptModal.style.display="none"; }
-
-// FILTER
-function filterQuarter(q){
-document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
-if(!r.dataset.q || r.dataset.q=="-"){
-r.style.display="";
-return;
-}
-r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
-});
-}
-
-// POPUP
+// VIEW
 function openModal(btn){
 let r=btn.parentElement.parentElement;
 mMonth.innerText="Month: "+r.children[0].innerText;
 mCommission.innerText="Commission: "+r.children[1].innerText;
 mVAT.innerText="VAT: "+r.children[2].innerText;
+mRef.innerText="Reference: "+(r.dataset.ref || "N/A");
 modal.style.display="block";
 }
 
 function closeModal(){ modal.style.display="none"; }
+
+// FILTER
+function filterQuarter(q){
+document.querySelectorAll("#vatTable tbody tr").forEach(r=>{
+if(!r.dataset.q){ r.style.display=""; return;}
+r.style.display=(q==="all"||r.dataset.q===q)?"":"none";
+});
+}
 </script>
 
 </body>
